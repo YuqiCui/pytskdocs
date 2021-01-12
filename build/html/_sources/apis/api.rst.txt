@@ -1,15 +1,36 @@
-.. PyTSK documentation master file, created by
-   sphinx-quickstart on Mon Jan 11 14:48:13 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-
-pytsk
+PyTSK API
 =================================
 
 pytsk.torch_model
 ##################
 
-.. py:function:: enumerate(sequence[, start=0])
+.. py:class:: pytsk.torch_model.TSK(in_dim, out_dim, n_rules, order=1, antecedent="tsk")
 
-   返回一个迭代对象,递归式处理字典结构的索引或是其它类似序列内容
+    Parent: :code:`torch.nn.Module`.
+
+    TSK model.
+
+    :param int in_dim: Input dimension :math:`D`.
+    :param int out_dim: Output dimension, :math:`C` for C-class classification problems, :math:`1` for single output regression problems.
+    :param int n_rules: Number of rules :math:`R` of the TSK model.
+    :param int order: 0 or 1. `default=1`. If :code:`order=1`, first-order TSK is generated, else zero-order TSK is generated.
+    :param str antecedent: :code:`default="tsk"`. Define the antecedent part of the TSK model. Support: :code:`tsk`, :code:`htst`, :code:`logtsk`, or custom :func:`Antecedent() <pytsk.torch_model.Antecedent>` class.
+
+    .. py:method:: init_model(self, X, y=None, scale=1., std=0.2, method="cluster", sigma=None, cluster_kwargs=None, eps=1e-8)
+
+        The antecedent parameters are initialized by this. Must be called before training.
+
+        :param numpy.array X: Numpy array input with size :math:`(N, D)` for antecedent parameters initialization.
+        :param numpy.array y: Numpy array input with size :math:`(N)` for antecedent parameters initialization. This parameter is reserved for custom Antecedent modules or further version, and is not used in this version.
+        :param float scale: Parameter for initializing the standard deviation :math:`\sigma` of Gaussian fuzzy sets in each rule, :math:`\sigma\sim\mathcal{N}(\text{scale}, \text{std})`.
+        :param float std: Parameter for initializing the standard deviation :math:`\sigma` of Gaussian fuzzy sets in each rule, :math:`\sigma\sim\mathcal{N}(\text{scale}, \text{std})`.
+        :param str method: Method for initializing the center of antecedent parameters, support: `random`, `cluster`. If ::
+            `random`: The center of the rules are selected randomly from :code:`X`.
+
+
+.. py:class:: pytsk.torch_model.Antecedent()
+
+    Parent: :code:`torch.nn.Module`.
+
+    Antecedent of the TSK model.
+
