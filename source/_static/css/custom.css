@@ -1,0 +1,25 @@
+/*h1 {*/
+/*  font-size: 40px;*/
+/*}*/
+
+/*h2 {*/
+/*  font-size: 30px;*/
+/*}*/
+
+/*p {*/
+/*  font-size: 20px;*/
+/*}*/
+
+/*span {*/
+/*  font-size: 16px;*/
+/*}*/
+
+.wy-nav-content {
+    max-width: 1400px;
+}
+
+/*.rst-content code,
+.rst-content tt,*/
+.rst-content code.xref{
+    color: #e74c3c;
+}

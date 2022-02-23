@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>API: pytsk.cluster &mdash; PyTSK  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API: pytsk.gradient_descent" href="gradient_descent.html" />
+    <link rel="prev" title="Models &amp; Technique" href="../models.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PyTSK
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models &amp; Technique</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API: pytsk.cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradient_descent.html">API: pytsk.gradient_descent</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyTSK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>API: pytsk.cluster</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/apis/cluster.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-pytsk-cluster">
+<h1>API: pytsk.cluster<a class="headerlink" href="#api-pytsk-cluster" title="Permalink to this headline">¶</a></h1>
+<p>This package contains all the APIs you need to build and train a fuzzy system by fuzzy clustering algorithms.</p>
+<dl class="py class">
+<dt id="pytsk.cluster.BaseFuzzyClustering">
+<em class="property">class </em><code class="sig-prename descclassname">pytsk.cluster.</code><code class="sig-name descname">BaseFuzzyClustering</code><a class="headerlink" href="#pytsk.cluster.BaseFuzzyClustering" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent: <code class="code docutils literal notranslate"><span class="pre">object</span></code>.</p>
+<p>The parent class of fuzzy clustering classes.</p>
+<dl class="py method">
+<dt id="pytsk.cluster.BaseFuzzyClustering.set_params">
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytsk.cluster.BaseFuzzyClustering.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setting attributes. Implemented to adapt the API of scikit-learn.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pytsk.cluster.FuzzyCMeans">
+<em class="property">class </em><code class="sig-prename descclassname">pytsk.cluster.</code><code class="sig-name descname">FuzzyCMeans</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_cluster</span></em>, <em class="sig-param"><span class="n">fuzzy_index</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">sigma_scale</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">'random'</span></em>, <em class="sig-param"><span class="n">tol_iter</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">error</span><span class="o">=</span><span class="default_value">1e-6</span></em>, <em class="sig-param"><span class="n">dist</span><span class="o">=</span><span class="default_value">'euclidean'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">order</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytsk.cluster.FuzzyCMeans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent: <a class="reference internal" href="#pytsk.cluster.BaseFuzzyClustering" title="pytsk.cluster.BaseFuzzyClustering"><code class="xref py py-func docutils literal notranslate"><span class="pre">BaseFuzzyClustering</span></code></a>, <code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code>.</p>
+<p>The fuzzy c-means (FCM) clustering algorithm [1]. This implementation is adopted from the <a class="reference external" href="https://pythonhosted.org/scikit-fuzzy/overview.html">scikit-fuzzy</a> package. When constructing a TSK fuzzy system, a fuzzy clustering algorithm is usually used to compute the antecedent parameters, after that, the consequent parameters can be computed by least-squared error algorithms, such as Ridge regression [2]. How to use this class can be found at <a class="reference external" href="quick_start.html#training-with-fuzzy-clustering">Quick start</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_cluster</strong> (<em>int</em>) – Number of clusters, equal to the number of rules <span class="math notranslate nohighlight">\(R\)</span> of a TSK model.</p></li>
+<li><p><strong>fuzzy_index</strong> (<em>float/str</em>) – Fuzzy index of the FCM algorithm, default <cite>auto</cite>. If <code class="code docutils literal notranslate"><span class="pre">fuzzy_index=auto</span></code>, then the fuzzy index is computed as <span class="math notranslate nohighlight">\(\min(N, D-1) / (\min(N, D-1)-2)\)</span> (If <span class="math notranslate nohighlight">\(\min(N, D-1)&lt;3\)</span>, fuzzy index will be set to 2), according to [3]. Otherwise the given float value is used.</p></li>
+<li><p><strong>sigma_scale</strong> (<em>float/str</em>) – The scale parameter <span class="math notranslate nohighlight">\(h\)</span> to adjust the actual standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span> of the Gaussian membership function in TSK antecedent part. If <code class="code docutils literal notranslate"><span class="pre">sigma_scale=auto</span></code>, <code class="code docutils literal notranslate"><span class="pre">sigma_scale</span></code> will be set as <span class="math notranslate nohighlight">\(\sqrt{D}\)</span>, where <span class="math notranslate nohighlight">\(D\)</span> is the input dimension [4]. Otherwise the given float value is used.</p></li>
+<li><p><strong>init</strong> (<em>str/np.array</em>) – The initialization strategy of the membership grid matrix <span class="math notranslate nohighlight">\(U\)</span>. Support “random” or numpy array with the size of <span class="math notranslate nohighlight">\([R, N]\)</span>, where <span class="math notranslate nohighlight">\(R\)</span> is the number of clusters/rules, <span class="math notranslate nohighlight">\(N\)</span> is the number of training samples. If <code class="code docutils literal notranslate"><span class="pre">init=&quot;random&quot;</span></code>, the initial membership grid matrix will be randomly initialized, otherwise the given matrix will be used.</p></li>
+<li><p><strong>tol_iter</strong> (<em>int</em>) – The total iteration of the FCM algorithm.</p></li>
+<li><p><strong>error</strong> (<em>float</em>) – The maximum error that will stop the iteration before maximum iteration is reached.</p></li>
+<li><p><strong>dist</strong> (<em>str</em>) – The distance type for the <code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.spatial.distance.cdist()</span></code> function, default “euclidean”. The distance function can also be “braycurtis”, “canberra”, “chebyshev”, “cityblock”, “correlation”, “cosine”, “dice”, “euclidean”, “hamming”, “jaccard”, “jensenshannon”, “kulsinski”, “kulczynski1”, “mahalanobis”, “matching”, “minkowski”, “rogerstanimoto”, “russellrao”, “seuclidean”, “sokalmichener”, “sokalsneath”, “sqeuclidean”, “yule”.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – If &gt; 0, it will show the loss of the FCM objective function during iterations.</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – 0 or 1. Decide whether to construct a zero-order TSK or a first-order TSK.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pytsk.cluster.FuzzyCMeans.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytsk.cluster.FuzzyCMeans.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the FCM algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.array</em>) – Input array with the size of <span class="math notranslate nohighlight">\([N, D]\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of training samples, and <span class="math notranslate nohighlight">\(D\)</span> is number of features.</p></li>
+<li><p><strong>y</strong> (<em>numpy.array</em>) – Not used. Pass None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pytsk.cluster.FuzzyCMeans.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytsk.cluster.FuzzyCMeans.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict the membership degrees of <code class="code docutils literal notranslate"><span class="pre">X</span></code> on each cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.array</em>) – Input array with the size of <span class="math notranslate nohighlight">\([N, D]\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of training samples, and <span class="math notranslate nohighlight">\(D\)</span> is number of features.</p></li>
+<li><p><strong>y</strong> (<em>numpy.array</em>) – Not used. Pass None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>return the membership degree matrix <span class="math notranslate nohighlight">\(U\)</span> with the size of <span class="math notranslate nohighlight">\([N, R]\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of samples of <code class="code docutils literal notranslate"><span class="pre">X</span></code>, and <span class="math notranslate nohighlight">\(R\)</span> is the number of clusters/rules. <span class="math notranslate nohighlight">\(U_{i,j}\)</span> represents the membership degree of the <span class="math notranslate nohighlight">\(i\)</span>-th sample on the <span class="math notranslate nohighlight">\(r\)</span>-th cluster.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pytsk.cluster.FuzzyCMeans.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytsk.cluster.FuzzyCMeans.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform <code class="code docutils literal notranslate"><span class="pre">X</span></code> into the consequent input matrix <span class="math notranslate nohighlight">\(X_p\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.array</em>) – Input array with the size of <span class="math notranslate nohighlight">\([N, D]\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of training samples, and <span class="math notranslate nohighlight">\(D\)</span> is number of features.</p></li>
+<li><p><strong>y</strong> (<em>numpy.array</em>) – Not used. Pass None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>return the consequent input <span class="math notranslate nohighlight">\(X_p\)</span> with the size of <span class="math notranslate nohighlight">\([N, (D+1)\times R]\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of test samples, <span class="math notranslate nohighlight">\(D\)</span> is number of features, <span class="math notranslate nohighlight">\(R\)</span> is the number of clusters/rules.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="x2xp__">
+<span id="__x2xp__"></span><code class="sig-name descname">__x2xp__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">u</span></em>, <em class="sig-param"><span class="n">order</span></em><span class="sig-paren">)</span><a class="headerlink" href="#x2xp__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert matrix <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(U\)</span> into the consequent input matrix <span class="math notranslate nohighlight">\(X_p\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>numpy.array</em>) – size: <span class="math notranslate nohighlight">\([N,D]\)</span>. Input features.</p></li>
+<li><p><strong>u</strong> (<em>numpy.array</em>) – size: <span class="math notranslate nohighlight">\([N,R]\)</span>. Corresponding membership degree matrix.</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – 0 or 1. The order of TSK models.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If <code class="code docutils literal notranslate"><span class="pre">order=0</span></code>, return <span class="math notranslate nohighlight">\(U\)</span> directly, else if <code class="code docutils literal notranslate"><span class="pre">order=1</span></code>, return the matrix <span class="math notranslate nohighlight">\(X_p\)</span> with the size of <span class="math notranslate nohighlight">\([N, (D+1)\times R]\)</span>. Details can be found at [2].</p>
+</dd>
+</dl>
+<p>[1] <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/0098300484900207">Bezdek J C, Ehrlich R, Full W. FCM: The fuzzy c-means clustering algorithm[J]. Computers &amp; geosciences, 1984, 10(2-3): 191-203.</a></p>
+<p>[2] <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1568494606000469">Wang S, Chung K F L, Zhaohong D, et al. Robust fuzzy clustering neural network based on ɛ-insensitive loss function[J]. Applied Soft Computing, 2007, 7(2): 577-584.</a></p>
+<p>[3] <a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/1262532/">Yu J, Cheng Q, Huang H. Analysis of the weighting exponent in the FCM[J]. IEEE Transactions on Systems, Man, and Cybernetics, Part B (Cybernetics), 2004, 34(1): 634-639.</a></p>
+<p>[4] <a class="reference external" href="https://arxiv.org/pdf/2102.04271.pdf">Cui Y, Wu D, Xu Y. Curse of dimensionality for tsk fuzzy neural networks: Explanation and solutions[C]//2021 International Joint Conference on Neural Networks (IJCNN). IEEE, 2021: 1-8.</a></p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="gradient_descent.html" class="btn btn-neutral float-right" title="API: pytsk.gradient_descent" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../models.html" class="btn btn-neutral float-left" title="Models &amp; Technique" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Yuqi Cui.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

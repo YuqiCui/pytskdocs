@@ -1,0 +1,539 @@
+<<<<<<< HEAD
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>API &mdash; PyTSK  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pytsk.cluster" href="cluster.html" />
+    <link rel="prev" title="Models &amp; Technique" href="../models.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PyTSK
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models &amp; Technique</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pytsk-api">pytsk.api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pytsk-gradient-descent">pytsk.gradient_descent</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">pytsk.cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradient_descent.html">pytsk.gradient_descent</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyTSK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/apis/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pytsk-api">
+<h2>pytsk.api<a class="headerlink" href="#pytsk-api" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="pytsk.torch_model.TSK">
+<em class="property">class </em><code class="sig-prename descclassname">pytsk.torch_model.</code><code class="sig-name descname">TSK</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_dim</span></em>, <em class="sig-param"><span class="n">out_dim</span></em>, <em class="sig-param"><span class="n">n_rules</span></em>, <em class="sig-param"><span class="n">order</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">antecedent</span><span class="o">=</span><span class="default_value">'tsk'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytsk.torch_model.TSK" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent: <code class="code docutils literal notranslate"><span class="pre">torch.nn.Module</span></code>.</p>
+<p>TSK model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_dim</strong> (<em>int</em>) – Input dimension <span class="math notranslate nohighlight">\(D\)</span>.</p></li>
+<li><p><strong>out_dim</strong> (<em>int</em>) – Output dimension, <span class="math notranslate nohighlight">\(C\)</span> for C-class classification problems, <span class="math notranslate nohighlight">\(1\)</span> for single output regression problems.</p></li>
+<li><p><strong>n_rules</strong> (<em>int</em>) – Number of rules <span class="math notranslate nohighlight">\(R\)</span> of the TSK model.</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – 0 or 1. <cite>default=1</cite>. If <code class="code docutils literal notranslate"><span class="pre">order=1</span></code>, first-order TSK is generated, else zero-order TSK is generated.</p></li>
+<li><p><strong>antecedent</strong> (<em>str</em>) – <code class="code docutils literal notranslate"><span class="pre">default=&quot;tsk&quot;</span></code>. Define the antecedent part of the TSK model. Support: <code class="code docutils literal notranslate"><span class="pre">tsk</span></code>, <code class="code docutils literal notranslate"><span class="pre">htst</span></code>, <code class="code docutils literal notranslate"><span class="pre">logtsk</span></code>, or custom <a class="reference internal" href="#pytsk.torch_model.Antecedent" title="pytsk.torch_model.Antecedent"><code class="xref py py-func docutils literal notranslate"><span class="pre">Antecedent()</span></code></a> class.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pytsk.torch_model.TSK.init_model">
+<code class="sig-name descname">init_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">1.</span></em>, <em class="sig-param"><span class="n">std</span><span class="o">=</span><span class="default_value">0.2</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'cluster'</span></em>, <em class="sig-param"><span class="n">sigma</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cluster_kwargs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">1e-8</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytsk.torch_model.TSK.init_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>The antecedent parameters are initialized by this. Must be called before training.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.array</em>) – Numpy array input with size <span class="math notranslate nohighlight">\((N, D)\)</span> for antecedent parameters initialization.</p></li>
+<li><p><strong>y</strong> (<em>numpy.array</em>) – Numpy array input with size <span class="math notranslate nohighlight">\((N)\)</span> for antecedent parameters initialization. This parameter is reserved for custom Antecedent modules or further version, and is not used in this version.</p></li>
+<li><p><strong>scale</strong> (<em>float</em>) – Parameter for initializing the standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span> of Gaussian fuzzy sets in each rule, <span class="math notranslate nohighlight">\(\sigma\sim\mathcal{N}(\text{scale}, \text{std})\)</span>.</p></li>
+<li><p><strong>std</strong> (<em>float</em>) – Parameter for initializing the standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span> of Gaussian fuzzy sets in each rule, <span class="math notranslate nohighlight">\(\sigma\sim\mathcal{N}(\text{scale}, \text{std})\)</span>.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – Method for initializing the center of antecedent parameters, support: <cite>random</cite>, <cite>cluster</cite>. If ::
+<cite>random</cite>: The center of the rules are selected randomly from <code class="code docutils literal notranslate"><span class="pre">X</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pytsk.torch_model.Antecedent">
+<em class="property">class </em><code class="sig-prename descclassname">pytsk.torch_model.</code><code class="sig-name descname">Antecedent</code><a class="headerlink" href="#pytsk.torch_model.Antecedent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent: <code class="code docutils literal notranslate"><span class="pre">torch.nn.Module</span></code>.</p>
+<p>Antecedent of the TSK model.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="pytsk-gradient-descent">
+<h2>pytsk.gradient_descent<a class="headerlink" href="#pytsk-gradient-descent" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="cluster.html" class="btn btn-neutral float-right" title="pytsk.cluster" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../models.html" class="btn btn-neutral float-left" title="Models &amp; Technique" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Yuqi Cui.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+=======
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>API &mdash; PyTSK  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pytsk.gradient_descent" href="gradient_descent.html" />
+    <link rel="prev" title="Models &amp; Technique" href="../models.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PyTSK
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quick_start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models &amp; Technique</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pytsk-api">pytsk.api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pytsk-gradient-descent">pytsk.gradient_descent</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gradient_descent.html">pytsk.gradient_descent</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyTSK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/apis/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pytsk-api">
+<h2>pytsk.api<a class="headerlink" href="#pytsk-api" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="pytsk.torch_model.TSK">
+<em class="property">class </em><code class="sig-prename descclassname">pytsk.torch_model.</code><code class="sig-name descname">TSK</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_dim</span></em>, <em class="sig-param"><span class="n">out_dim</span></em>, <em class="sig-param"><span class="n">n_rules</span></em>, <em class="sig-param"><span class="n">order</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">antecedent</span><span class="o">=</span><span class="default_value">'tsk'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytsk.torch_model.TSK" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent: <code class="code docutils literal notranslate"><span class="pre">torch.nn.Module</span></code>.</p>
+<p>TSK model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_dim</strong> (<em>int</em>) – Input dimension <span class="math notranslate nohighlight">\(D\)</span>.</p></li>
+<li><p><strong>out_dim</strong> (<em>int</em>) – Output dimension, <span class="math notranslate nohighlight">\(C\)</span> for C-class classification problems, <span class="math notranslate nohighlight">\(1\)</span> for single output regression problems.</p></li>
+<li><p><strong>n_rules</strong> (<em>int</em>) – Number of rules <span class="math notranslate nohighlight">\(R\)</span> of the TSK model.</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – 0 or 1. <cite>default=1</cite>. If <code class="code docutils literal notranslate"><span class="pre">order=1</span></code>, first-order TSK is generated, else zero-order TSK is generated.</p></li>
+<li><p><strong>antecedent</strong> (<em>str</em>) – <code class="code docutils literal notranslate"><span class="pre">default=&quot;tsk&quot;</span></code>. Define the antecedent part of the TSK model. Support: <code class="code docutils literal notranslate"><span class="pre">tsk</span></code>, <code class="code docutils literal notranslate"><span class="pre">htst</span></code>, <code class="code docutils literal notranslate"><span class="pre">logtsk</span></code>, or custom <a class="reference internal" href="#pytsk.torch_model.Antecedent" title="pytsk.torch_model.Antecedent"><code class="xref py py-func docutils literal notranslate"><span class="pre">Antecedent()</span></code></a> class.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pytsk.torch_model.TSK.init_model">
+<code class="sig-name descname">init_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">1.</span></em>, <em class="sig-param"><span class="n">std</span><span class="o">=</span><span class="default_value">0.2</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'cluster'</span></em>, <em class="sig-param"><span class="n">sigma</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cluster_kwargs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">1e-8</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytsk.torch_model.TSK.init_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>The antecedent parameters are initialized by this. Must be called before training.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.array</em>) – Numpy array input with size <span class="math notranslate nohighlight">\((N, D)\)</span> for antecedent parameters initialization.</p></li>
+<li><p><strong>y</strong> (<em>numpy.array</em>) – Numpy array input with size <span class="math notranslate nohighlight">\((N)\)</span> for antecedent parameters initialization. This parameter is reserved for custom Antecedent modules or further version, and is not used in this version.</p></li>
+<li><p><strong>scale</strong> (<em>float</em>) – Parameter for initializing the standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span> of Gaussian fuzzy sets in each rule, <span class="math notranslate nohighlight">\(\sigma\sim\mathcal{N}(\text{scale}, \text{std})\)</span>.</p></li>
+<li><p><strong>std</strong> (<em>float</em>) – Parameter for initializing the standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span> of Gaussian fuzzy sets in each rule, <span class="math notranslate nohighlight">\(\sigma\sim\mathcal{N}(\text{scale}, \text{std})\)</span>.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – Method for initializing the center of antecedent parameters, support: <cite>random</cite>, <cite>cluster</cite>. If ::
+<cite>random</cite>: The center of the rules are selected randomly from <code class="code docutils literal notranslate"><span class="pre">X</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pytsk.torch_model.Antecedent">
+<em class="property">class </em><code class="sig-prename descclassname">pytsk.torch_model.</code><code class="sig-name descname">Antecedent</code><a class="headerlink" href="#pytsk.torch_model.Antecedent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent: <code class="code docutils literal notranslate"><span class="pre">torch.nn.Module</span></code>.</p>
+<p>Antecedent of the TSK model.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="pytsk-gradient-descent">
+<h2>pytsk.gradient_descent<a class="headerlink" href="#pytsk-gradient-descent" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="gradient_descent.html" class="btn btn-neutral float-right" title="pytsk.gradient_descent" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../models.html" class="btn btn-neutral float-left" title="Models &amp; Technique" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Yuqi Cui.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+>>>>>>> 86784b833b0cf163f6534d97b7a4e25e882a96b9
+</html>

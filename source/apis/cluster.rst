@@ -1,0 +1,72 @@
+=======================
+API: pytsk.cluster
+=======================
+
+This package contains all the APIs you need to build and train a fuzzy system by fuzzy clustering algorithms.
+
+.. py:class:: pytsk.cluster.BaseFuzzyClustering()
+
+    Parent: :code:`object`.
+
+    The parent class of fuzzy clustering classes.
+
+    .. py:method:: set_params(self, **params)
+
+        Setting attributes. Implemented to adapt the API of scikit-learn.
+
+.. py:class:: pytsk.cluster.FuzzyCMeans(n_cluster, fuzzy_index="auto", sigma_scale="auto", init="random", tol_iter=100, error=1e-6, dist="euclidean", verbose=0, order=1)
+
+    Parent: :func:`BaseFuzzyClustering <pytsk.cluster.BaseFuzzyClustering>`, :func:`sklearn.base.BaseEstimator <https://scikit-learn.org/stable/modules/generated/sklearn.base.BaseEstimator.html>`, :func:`sklearn.base.TransformerMixin <https://scikit-learn.org/stable/modules/generated/sklearn.base.TransformerMixin.html>`.
+
+    The fuzzy c-means (FCM) clustering algorithm [1]. This implementation is adopted from the `scikit-fuzzy <https://pythonhosted.org/scikit-fuzzy/overview.html>`_ package. When constructing a TSK fuzzy system, a fuzzy clustering algorithm is usually used to compute the antecedent parameters, after that, the consequent parameters can be computed by least-squared error algorithms, such as Ridge regression [2]. How to use this class can be found at `Quick start <quick_start.html#training-with-fuzzy-clustering>`_.
+
+    :param int n_cluster: Number of clusters, equal to the number of rules :math:`R` of a TSK model.
+    :param float/str fuzzy_index: Fuzzy index of the FCM algorithm, default `auto`. If :code:`fuzzy_index=auto`, then the fuzzy index is computed as :math:`\min(N, D-1) / (\min(N, D-1)-2)` (If :math:`\min(N, D-1)<3`, fuzzy index will be set to 2), according to [3]. Otherwise the given float value is used.
+    :param float/str sigma_scale: The scale parameter :math:`h` to adjust the actual standard deviation :math:`\sigma` of the Gaussian membership function in TSK antecedent part. If :code:`sigma_scale=auto`, :code:`sigma_scale` will be set as :math:`\sqrt{D}`, where :math:`D` is the input dimension [4]. Otherwise the given float value is used.
+    :param str/np.array init: The initialization strategy of the membership grid matrix :math:`U`. Support "random" or numpy array with the size of :math:`[R, N]`, where :math:`R` is the number of clusters/rules, :math:`N` is the number of training samples. If :code:`init="random"`, the initial membership grid matrix will be randomly initialized, otherwise the given matrix will be used.
+    :param int tol_iter: The total iteration of the FCM algorithm.
+    :param float error: The maximum error that will stop the iteration before maximum iteration is reached.
+    :param str dist: The distance type for the :func:`scipy.spatial.distance.cdist` function, default "euclidean". The distance function can also be "braycurtis", "canberra", "chebyshev", "cityblock", "correlation", "cosine", "dice", "euclidean", "hamming", "jaccard", "jensenshannon", "kulsinski", "kulczynski1", "mahalanobis", "matching", "minkowski", "rogerstanimoto", "russellrao", "seuclidean", "sokalmichener", "sokalsneath", "sqeuclidean", "yule".
+    :param int verbose: If > 0, it will show the loss of the FCM objective function during iterations.
+    :param int order: 0 or 1. Decide whether to construct a zero-order TSK or a first-order TSK.
+
+    .. py:method:: fit(self, X, y=None)
+
+        Run the FCM algorithm.
+
+        :param numpy.array X: Input array with the size of :math:`[N, D]`, where :math:`N` is the number of training samples, and :math:`D` is number of features.
+        :param numpy.array y: Not used. Pass None.
+
+    .. py:method:: predict(self, X, y=None)
+
+        Predict the membership degrees of :code:`X` on each cluster.
+
+        :param numpy.array X: Input array with the size of :math:`[N, D]`, where :math:`N` is the number of training samples, and :math:`D` is number of features.
+        :param numpy.array y: Not used. Pass None.
+        :return: return the membership degree matrix :math:`U` with the size of :math:`[N, R]`, where :math:`N` is the number of samples of :code:`X`, and :math:`R` is the number of clusters/rules. :math:`U_{i,j}` represents the membership degree of the :math:`i`-th sample on the :math:`r`-th cluster.
+
+    .. py:method:: transform(self, X, y=None)
+
+        Transform :code:`X` into the consequent input matrix :math:`X_p`
+
+        :param numpy.array X: Input array with the size of :math:`[N, D]`, where :math:`N` is the number of training samples, and :math:`D` is number of features.
+        :param numpy.array y: Not used. Pass None.
+        :return: return the consequent input :math:`X_p` with the size of :math:`[N, (D+1)\times R]`, where :math:`N` is the number of test samples, :math:`D` is number of features, :math:`R` is the number of clusters/rules.
+
+.. py:function:: __x2xp__(x,u,order)
+
+    Convert the feature matrix :math:`X` and the membership degree matrix :math:`U` into the consequent input matrix :math:`X_p`
+
+    :param numpy.array x: size: :math:`[N,D]`. Input features.
+    :param numpy.array u: size: :math:`[N,R]`. Corresponding membership degree matrix.
+    :param int order: 0 or 1. The order of TSK models.
+    :return: If :code:`order=0`, return :math:`U` directly, else if :code:`order=1`, return the matrix :math:`X_p` with the size of :math:`[N, (D+1)\times R]`. Details can be found at [2].
+
+    [1] `Bezdek J C, Ehrlich R, Full W. FCM: The fuzzy c-means clustering algorithm[J]. Computers & geosciences, 1984, 10(2-3): 191-203. <https://www.sciencedirect.com/science/article/pii/0098300484900207>`_
+
+    [2] `Wang S, Chung K F L, Zhaohong D, et al. Robust fuzzy clustering neural network based on ɛ-insensitive loss function[J]. Applied Soft Computing, 2007, 7(2): 577-584. <https://www.sciencedirect.com/science/article/pii/S1568494606000469>`_
+
+    [3] `Yu J, Cheng Q, Huang H. Analysis of the weighting exponent in the FCM[J]. IEEE Transactions on Systems, Man, and Cybernetics, Part B (Cybernetics), 2004, 34(1): 634-639. <https://ieeexplore.ieee.org/abstract/document/1262532/>`_
+
+    [4] `Cui Y, Wu D, Xu Y. Curse of dimensionality for tsk fuzzy neural networks: Explanation and solutions[C]//2021 International Joint Conference on Neural Networks (IJCNN). IEEE, 2021: 1-8. <https://arxiv.org/pdf/2102.04271.pdf>`_
+
