@@ -55,7 +55,7 @@ This package contains all the APIs you need to build and train a fuzzy system by
 
 .. py:function:: __x2xp__(x,u,order)
 
-    Convert matrix :math:`X` and :math:`U` into the consequent input matrix :math:`X_p`
+    Convert the feature matrix :math:`X` and the membership degree matrix :math:`U` into the consequent input matrix :math:`X_p`
 
     :param numpy.array x: size: :math:`[N,D]`. Input features.
     :param numpy.array u: size: :math:`[N,R]`. Corresponding membership degree matrix.

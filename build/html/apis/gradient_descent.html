@@ -93,9 +93,9 @@
 <li class="toctree-l1"><a class="reference internal" href="cluster.html">API: pytsk.cluster</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API: pytsk.gradient_descent</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#pytsk-gradient-descent-antecedent">pytsk.gradient_descent.antecedent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pytsk-gradient-descent-callbacks">pytsk.gradient_descent.callbacks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pytsk-gradient-descent-training">pytsk.gradient_descent.training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pytsk-gradient-descent-tsk">pytsk.gradient_descent.tsk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pytsk-gradient-descent-training">pytsk.gradient_descent.training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pytsk-gradient-descent-callbacks">pytsk.gradient_descent.callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pytsk-gradient-descent-utils">pytsk.gradient_descent.utils</a></li>
 </ul>
 </li>
@@ -174,7 +174,7 @@
 <dl class="py class">
 <dt id="AntecedentGMF">
 <em class="property">class </em><code class="sig-name descname">AntecedentGMF</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_dim</span></em>, <em class="sig-param"><span class="n">n_rule</span></em>, <em class="sig-param"><span class="n">high_dim</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">init_center</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_sigma</span><span class="o">=</span><span class="default_value">1.</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">1e-8</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AntecedentGMF" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parent: <code class="code docutils literal notranslate"><span class="pre">torch.nn.Module</span></code>.</p>
+<dd><p>Parent: <code class="code docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></p>
 <p>The antecedent part with Gaussian membership function. Input: data, output the corresponding firing levels of each rule.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -214,7 +214,7 @@
 <dd><p>Forward method of Pytorch Module.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<em>torch.tensor</em>) – pytorch tensor with the size of <span class="math notranslate nohighlight">\([N, D]\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of samples, <span class="math notranslate nohighlight">\(D\)</span> is the input dimension.</p>
+<dd class="field-odd"><p><strong>X</strong> (<em>torch.tensor</em>) – Pytorch tensor with the size of <span class="math notranslate nohighlight">\([N, D]\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of samples, <span class="math notranslate nohighlight">\(D\)</span> is the input dimension.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Firing level matrix <span class="math notranslate nohighlight">\(U\)</span> with the size of <span class="math notranslate nohighlight">\([N, R]\)</span>.</p>
@@ -224,24 +224,252 @@
 
 </dd></dl>
 
+<dl class="py class">
+<dt id="AntecedentShareGMF">
+<em class="property">class </em><code class="sig-name descname">AntecedentShareGMF</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_dim</span></em>, <em class="sig-param"><span class="n">n_mf</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">high_dim</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">init_center</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_sigma</span><span class="o">=</span><span class="default_value">1.</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">1e-8</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AntecedentShareGMF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent: <code class="code docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></p>
+<p>The antecedent part with Gaussian membership function, rules will share the membership functions on each feature [2]. The number of rules will be <span class="math notranslate nohighlight">\(M^D\)</span>, where <span class="math notranslate nohighlight">\(M\)</span> is <code class="code docutils literal notranslate"><span class="pre">n_mf</span></code>, <span class="math notranslate nohighlight">\(D\)</span> is the number of features (<code class="code docutils literal notranslate"><span class="pre">in_dim</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_dim</strong> (<em>int</em>) – Number of features <span class="math notranslate nohighlight">\(D\)</span> of the input.</p></li>
+<li><p><strong>n_mf</strong> (<em>int</em>) – Number of membership functions <span class="math notranslate nohighlight">\(M\)</span> of each feature.</p></li>
+<li><p><strong>high_dim</strong> (<em>bool</em>) – Whether to use the HTSK defuzzification. If <code class="code docutils literal notranslate"><span class="pre">high_dim=True</span></code>, HTSK is used. Otherwise the original defuzzification is used. More details can be found at [1]. TSK model tends to fail on high-dimensional problems, so set <code class="code docutils literal notranslate"><span class="pre">high_dim=True</span></code> is highly recommended for any-dimensional problems.</p></li>
+<li><p><strong>init_center</strong> (<em>numpy.array</em>) – Initial center of the Gaussian membership function with the size of <span class="math notranslate nohighlight">\([D,M]\)</span>.</p></li>
+<li><p><strong>init_sigma</strong> (<em>float</em>) – Initial <span class="math notranslate nohighlight">\(\sigma\)</span> of the Gaussian membership function.</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – A constant to avoid the division zero error.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="AntecedentShareGMF.init">
+<code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">center</span></em>, <em class="sig-param"><span class="n">sigma</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AntecedentShareGMF.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the value of <code class="code docutils literal notranslate"><span class="pre">init_center</span></code> and <code class="code docutils literal notranslate"><span class="pre">init_sigma</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center</strong> (<em>numpy.array</em>) – Initial center of the Gaussian membership function with the size of <span class="math notranslate nohighlight">\([D,M]\)</span>.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – Initial <span class="math notranslate nohighlight">\(\sigma\)</span> of the Gaussian membership function.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="AntecedentShareGMF.reset_parameters">
+<code class="sig-name descname">reset_parameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AntecedentShareGMF.reset_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-initialize all parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="AntecedentShareGMF.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AntecedentShareGMF.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forward method of Pytorch Module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>torch.tensor</em>) – Pytorch tensor with the size of <span class="math notranslate nohighlight">\([N, D]\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of samples, <span class="math notranslate nohighlight">\(D\)</span> is the input dimension.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Firing level matrix <span class="math notranslate nohighlight">\(U\)</span> with the size of <span class="math notranslate nohighlight">\([N, R], R=M^D\)</span>:.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt id="antecedent_init_center">
 <code class="sig-name descname">antecedent_init_center</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_rule</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'kmean'</span></em>, <em class="sig-param"><span class="n">engine</span><span class="o">=</span><span class="default_value">'sklearn'</span></em>, <em class="sig-param"><span class="n">n_init</span><span class="o">=</span><span class="default_value">20</span></em><span class="sig-paren">)</span><a class="headerlink" href="#antecedent_init_center" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function run KMeans clustering to obtain the <code class="code docutils literal notranslate"><span class="pre">init_center</span></code> for <a class="reference internal" href="#AntecedentGMF" title="AntecedentGMF"><code class="xref py py-func docutils literal notranslate"><span class="pre">AntecedentGMF()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.array</em>) – Feature matrix with the size of <span class="math notranslate nohighlight">\([N,D]\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of samples, <span class="math notranslate nohighlight">\(D\)</span> is the number of features.</p></li>
+<li><p><strong>y</strong> (<em>numpy.array</em>) – None, not used.</p></li>
+<li><p><strong>n_rule</strong> (<em>int</em>) – Number of rules <span class="math notranslate nohighlight">\(R\)</span>. This function will run a KMeans clustering to obtain <span class="math notranslate nohighlight">\(R\)</span> cluster centers as the initial antecedent center for TSK modeling.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – Current version only support “kmean”.</p></li>
+<li><p><strong>engine</strong> (<em>str</em>) – “sklearn” or “faiss”. If “sklearn”, then the <code class="code docutils literal notranslate"><span class="pre">sklearn.cluster.KMeans()</span></code> function will be used, otherwise the <code class="code docutils literal notranslate"><span class="pre">faiss.Kmeans()</span></code> will be used. Faiss provide a faster KMeans clustering algorithm, “faiss” is recommended for large datasets.</p></li>
+<li><p><strong>n_init</strong> (<em>int</em>) – Number of initialization of the KMeans algorithm. Same as the parameter <code class="code docutils literal notranslate"><span class="pre">n_init</span></code> in <code class="code docutils literal notranslate"><span class="pre">sklearn.cluster.KMeans()</span></code> and the parameter <code class="code docutils literal notranslate"><span class="pre">nredo</span></code> in <code class="code docutils literal notranslate"><span class="pre">faiss.Kmeans()</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <p>[1] <a class="reference external" href="https://arxiv.org/pdf/2102.04271.pdf">Cui Y, Wu D, Xu Y. Curse of dimensionality for tsk fuzzy neural networks: Explanation and solutions[C]//2021 International Joint Conference on Neural Networks (IJCNN). IEEE, 2021: 1-8.</a></p>
-</div>
-<div class="section" id="pytsk-gradient-descent-callbacks">
-<h2>pytsk.gradient_descent.callbacks<a class="headerlink" href="#pytsk-gradient-descent-callbacks" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="pytsk-gradient-descent-training">
-<h2>pytsk.gradient_descent.training<a class="headerlink" href="#pytsk-gradient-descent-training" title="Permalink to this headline">¶</a></h2>
+<p>[2] <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0165011498002383">Shi Y, Mizumoto M. A new approach of neuro-fuzzy learning algorithm for tuning fuzzy rules[J]. Fuzzy sets and systems, 2000, 112(1): 99-116.</a></p>
 </div>
 <div class="section" id="pytsk-gradient-descent-tsk">
 <h2>pytsk.gradient_descent.tsk<a class="headerlink" href="#pytsk-gradient-descent-tsk" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="TSK">
+<em class="property">class </em><code class="sig-name descname">TSK</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_dim</span></em>, <em class="sig-param"><span class="n">out_dim</span></em>, <em class="sig-param"><span class="n">n_rule</span></em>, <em class="sig-param"><span class="n">antecedent</span></em>, <em class="sig-param"><span class="n">order</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">1e-8</span></em>, <em class="sig-param"><span class="n">consbn</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TSK" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent: <code class="code docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></p>
+<p>This module define the consequent part of the TSK model and combines it with a pre-defined antecedent module. The input of this module is the raw feature matrix, and output the final prediction of a TSK model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_dim</strong> (<em>int</em>) – Number of features <span class="math notranslate nohighlight">\(D\)</span>.</p></li>
+<li><p><strong>out_dim</strong> (<em>int</em>) – Number of output dimension <span class="math notranslate nohighlight">\(C\)</span>.</p></li>
+<li><p><strong>n_rule</strong> (<em>int</em>) – Number of rules <span class="math notranslate nohighlight">\(R\)</span>, must equal to the <code class="code docutils literal notranslate"><span class="pre">n_rule</span></code> of the <code class="code docutils literal notranslate"><span class="pre">antecedent</span></code>.</p></li>
+<li><p><strong>antecedent</strong> (<em>torch.Module</em>) – An antecedent module, whose output dimension should be equal to the number of rules <span class="math notranslate nohighlight">\(R\)</span>.</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – 0 or 1. The order of TSK. If 0, zero-oder TSK, else, first-order TSK.</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – A constant to avoid the division zero error.</p></li>
+<li><p><strong>consbn</strong> (<em>bool</em>) – If true, a BN layer is added to normalize the consequent input, see <a class="reference external" href="../models.html#batch-normalization">Models &amp; Technique</a> for details.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="TSK.reset_parameters">
+<code class="sig-name descname">reset_parameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TSK.reset_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-initialize all parameters, including both consequent and antecedent parts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="TSK.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">get_frs</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TSK.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>torch.tensor</em>) – Input matrix with the size of <span class="math notranslate nohighlight">\([N, D]\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of samples.</p></li>
+<li><p><strong>get_frs</strong> (<em>bool</em>) – If true, the firing levels (the output of the antecedent) will also be returned.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If <code class="code docutils literal notranslate"><span class="pre">get_frs=True</span></code>, return the TSK output <span class="math notranslate nohighlight">\(Y\in \mathbb{R}^{N,C}\)</span> and the antecedent output <span class="math notranslate nohighlight">\(U\in \mathbb{R}^{N,R}\)</span>. If <code class="code docutils literal notranslate"><span class="pre">get_frs=False</span></code>,  only return the TSK output <span class="math notranslate nohighlight">\(Y\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pytsk-gradient-descent-training">
+<h2>pytsk.gradient_descent.training<a class="headerlink" href="#pytsk-gradient-descent-training" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="ur_loss">
+<code class="sig-name descname">ur_loss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">frs</span></em>, <em class="sig-param"><span class="n">tau</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ur_loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>The uniform regularization (UR) proposed by Cui et al. [3]. UR loss is computed as <span class="math notranslate nohighlight">\(\ell_{UR} = \sum_{r=1}^R (\frac{1}{N}\sum_{n=1}^N f_{n,r} - \tau)^2\)</span>,
+where <span class="math notranslate nohighlight">\(f_{n,r}\)</span> represents the firing level of the <span class="math notranslate nohighlight">\(n\)</span>-th sample on the <span class="math notranslate nohighlight">\(r\)</span>-th rule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frs</strong> (<em>torch.tensor</em>) – The firing levels (output of the antecedent) with the size of <span class="math notranslate nohighlight">\([N, R]\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of samples, <span class="math notranslate nohighlight">\(R\)</span> is the number of ruels.</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – The expectation <span class="math notranslate nohighlight">\(\tau\)</span> of the average firing level for each rule. For a <span class="math notranslate nohighlight">\(C\)</span>-class classification problem, we recommend setting <span class="math notranslate nohighlight">\(\tau\)</span> to <span class="math notranslate nohighlight">\(1/C\)</span>, for a regression problem, <span class="math notranslate nohighlight">\(\tau\)</span> can be set as <span class="math notranslate nohighlight">\(0.5\)</span>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A scale value, representing the UR loss.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="Wrapper">
+<em class="property">class </em><code class="sig-name descname">Wrapper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">criterion</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">512</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">callbacks</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">label_type</span><span class="o">=</span><span class="default_value">'c'</span></em>, <em class="sig-param"><span class="n">device</span><span class="o">=</span><span class="default_value">'cpu'</span></em>, <em class="sig-param"><span class="n">reset_param</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">ur</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">ur_tau</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="Wrapper.train_on_batch">
+<code class="sig-name descname">train_on_batch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">input</span></em>, <em class="sig-param"><span class="n">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.train_on_batch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Wrapper.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Wrapper.fit_loader">
+<code class="sig-name descname">fit_loader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">train_loader</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.fit_loader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Wrapper.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Wrapper.predict_proba">
+<code class="sig-name descname">predict_proba</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.predict_proba" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Wrapper.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Wrapper.load">
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p>[3] <a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/8962207/">Cui Y, Wu D, Huang J. Optimize tsk fuzzy systems for classification problems: Minibatch gradient descent with uniform regularization and batch normalization[J]. IEEE Transactions on Fuzzy Systems, 2020, 28(12): 3065-3075.</a></p>
+</div>
+<div class="section" id="pytsk-gradient-descent-callbacks">
+<h2>pytsk.gradient_descent.callbacks<a class="headerlink" href="#pytsk-gradient-descent-callbacks" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="Callback">
+<em class="property">class </em><code class="sig-name descname">Callback</code><a class="headerlink" href="#Callback" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="Callback.on_batch_begin">
+<code class="sig-name descname">on_batch_begin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">wrapper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Callback.on_batch_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Callback.on_batch_end">
+<code class="sig-name descname">on_batch_end</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">wrapper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Callback.on_batch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Callback.on_epoch_begin">
+<code class="sig-name descname">on_epoch_begin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">wrapper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Callback.on_epoch_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Callback.on_epoch_end">
+<code class="sig-name descname">on_epoch_end</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">wrapper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Callback.on_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="EvaluateAcc">
+<em class="property">class </em><code class="sig-name descname">EvaluateAcc</code><a class="headerlink" href="#EvaluateAcc" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="EvaluateAcc.on_epoch_end">
+<code class="sig-name descname">on_epoch_end</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">wrapper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#EvaluateAcc.on_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="EarlyStoppingACC">
+<em class="property">class </em><code class="sig-name descname">EarlyStoppingACC</code><a class="headerlink" href="#EarlyStoppingACC" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="EarlyStoppingACC.on_epoch_end">
+<code class="sig-name descname">on_epoch_end</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">wrapper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#EarlyStoppingACC.on_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="pytsk-gradient-descent-utils">
 <h2>pytsk.gradient_descent.utils<a class="headerlink" href="#pytsk-gradient-descent-utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="check_tensor">
+<code class="sig-name descname">check_tensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tensor</span></em>, <em class="sig-param"><span class="n">dtype</span></em><span class="sig-paren">)</span><a class="headerlink" href="#check_tensor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="reset_params">
+<code class="sig-name descname">reset_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#reset_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="NumpyDataLoader">
+<em class="property">class </em><code class="sig-name descname">NumpyDataLoader</code><a class="headerlink" href="#NumpyDataLoader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 </div>
 

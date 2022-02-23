@@ -9,7 +9,7 @@ pytsk.gradient_descent.antecedent
 
 .. py:class:: AntecedentGMF(in_dim, n_rule, high_dim=False, init_center=None, init_sigma=1., eps=1e-8)
 
-    Parent: :code:`torch.nn.Module`.
+    Parent: :code:`torch.nn.Module`
 
     The antecedent part with Gaussian membership function. Input: data, output the corresponding firing levels of each rule.
 
@@ -35,23 +35,151 @@ pytsk.gradient_descent.antecedent
 
         Forward method of Pytorch Module.
 
-        :param torch.tensor X: pytorch tensor with the size of :math:`[N, D]`, where :math:`N` is the number of samples, :math:`D` is the input dimension.
+        :param torch.tensor X: Pytorch tensor with the size of :math:`[N, D]`, where :math:`N` is the number of samples, :math:`D` is the input dimension.
         :return: Firing level matrix :math:`U` with the size of :math:`[N, R]`.
 
 
+.. py:class:: AntecedentShareGMF(in_dim, n_mf=2, high_dim=False, init_center=None, init_sigma=1., eps=1e-8)
+
+    Parent: :code:`torch.nn.Module`
+
+    The antecedent part with Gaussian membership function, rules will share the membership functions on each feature [2]. The number of rules will be :math:`M^D`, where :math:`M` is :code:`n_mf`, :math:`D` is the number of features (:code:`in_dim`).
+
+    :param int in_dim: Number of features :math:`D` of the input.
+    :param int n_mf: Number of membership functions :math:`M` of each feature.
+    :param bool high_dim: Whether to use the HTSK defuzzification. If :code:`high_dim=True`, HTSK is used. Otherwise the original defuzzification is used. More details can be found at [1]. TSK model tends to fail on high-dimensional problems, so set :code:`high_dim=True` is highly recommended for any-dimensional problems.
+    :param numpy.array init_center: Initial center of the Gaussian membership function with the size of :math:`[D,M]`.
+    :param float init_sigma: Initial :math:`\sigma` of the Gaussian membership function.
+    :param float eps: A constant to avoid the division zero error.
+
+    .. py:method:: init(self, center, sigma)
+
+        Change the value of :code:`init_center` and :code:`init_sigma`.
+
+        :param numpy.array center: Initial center of the Gaussian membership function with the size of :math:`[D,M]`.
+        :param float sigma: Initial :math:`\sigma` of the Gaussian membership function.
+
+    .. py:method:: reset_parameters(self)
+
+        Re-initialize all parameters.
+
+    .. py:method:: forward(self, X)
+
+        Forward method of Pytorch Module.
+
+        :param torch.tensor X: Pytorch tensor with the size of :math:`[N, D]`, where :math:`N` is the number of samples, :math:`D` is the input dimension.
+        :return: Firing level matrix :math:`U` with the size of :math:`[N, R], R=M^D`:.
+
 .. py:function:: antecedent_init_center(X, y=None, n_rule=2, method="kmean", engine="sklearn", n_init=20)
+
+    This function run KMeans clustering to obtain the :code:`init_center` for :func:`AntecedentGMF() <AntecedentGMF>`.
+
+    :param numpy.array X: Feature matrix with the size of :math:`[N,D]`, where :math:`N` is the number of samples, :math:`D` is the number of features.
+    :param numpy.array y: None, not used.
+    :param int n_rule: Number of rules :math:`R`. This function will run a KMeans clustering to obtain :math:`R` cluster centers as the initial antecedent center for TSK modeling.
+    :param str method: Current version only support "kmean".
+    :param str engine: "sklearn" or "faiss". If "sklearn", then the :code:`sklearn.cluster.KMeans()` function will be used, otherwise the :code:`faiss.Kmeans()` will be used. Faiss provide a faster KMeans clustering algorithm, "faiss" is recommended for large datasets.
+    :param int n_init: Number of initialization of the KMeans algorithm. Same as the parameter :code:`n_init` in :code:`sklearn.cluster.KMeans()` and the parameter :code:`nredo` in :code:`faiss.Kmeans()`.
 
 [1] `Cui Y, Wu D, Xu Y. Curse of dimensionality for tsk fuzzy neural networks: Explanation and solutions[C]//2021 International Joint Conference on Neural Networks (IJCNN). IEEE, 2021: 1-8. <https://arxiv.org/pdf/2102.04271.pdf>`_
 
-pytsk.gradient_descent.callbacks
-####################################
-
-pytsk.gradient_descent.training
-####################################
+[2] `Shi Y, Mizumoto M. A new approach of neuro-fuzzy learning algorithm for tuning fuzzy rules[J]. Fuzzy sets and systems, 2000, 112(1): 99-116. <https://www.sciencedirect.com/science/article/pii/S0165011498002383>`_
 
 pytsk.gradient_descent.tsk
 ####################################
 
+.. py:class:: TSK(in_dim, out_dim, n_rule, antecedent, order=1, eps=1e-8, consbn=False)
+
+    Parent: :code:`torch.nn.Module`
+
+    This module define the consequent part of the TSK model and combines it with a pre-defined antecedent module. The input of this module is the raw feature matrix, and output the final prediction of a TSK model.
+
+    :param int in_dim: Number of features :math:`D`.
+    :param int out_dim: Number of output dimension :math:`C`.
+    :param int n_rule: Number of rules :math:`R`, must equal to the :code:`n_rule` of the :code:`Antecedent()`.
+    :param torch.Module antecedent: An antecedent module, whose output dimension should be equal to the number of rules :math:`R`.
+    :param int order: 0 or 1. The order of TSK. If 0, zero-oder TSK, else, first-order TSK.
+    :param float eps: A constant to avoid the division zero error.
+    :param bool consbn: If true, a BN layer is added to normalize the consequent input, see `Models & Technique <../models.html#batch-normalization>`_ for details.
+
+    .. py:method:: reset_parameters(self)
+
+        Re-initialize all parameters, including both consequent and antecedent parts.
+
+    .. py:method:: forward(self, X, get_frs=False)
+
+        :param torch.tensor X: Input matrix with the size of :math:`[N, D]`, where :math:`N` is the number of samples.
+        :param bool get_frs: If true, the firing levels (the output of the antecedent) will also be returned.
+
+        :return: If :code:`get_frs=True`, return the TSK output :math:`Y\in \mathbb{R}^{N,C}` and the antecedent output :math:`U\in \mathbb{R}^{N,R}`. If :code:`get_frs=False`,  only return the TSK output :math:`Y`.
+
+pytsk.gradient_descent.training
+####################################
+
+.. py:function:: ur_loss(frs, tau=0.5)
+
+    The uniform regularization (UR) proposed by Cui et al. [3]. UR loss is computed as :math:`\ell_{UR} = \sum_{r=1}^R (\frac{1}{N}\sum_{n=1}^N f_{n,r} - \tau)^2`,
+    where :math:`f_{n,r}` represents the firing level of the :math:`n`-th sample on the :math:`r`-th rule.
+
+    :param torch.tensor frs: The firing levels (output of the antecedent) with the size of :math:`[N, R]`, where :math:`N` is the number of samples, :math:`R` is the number of ruels.
+    :param float tau: The expectation :math:`\tau` of the average firing level for each rule. For a :math:`C`-class classification problem, we recommend setting :math:`\tau` to :math:`1/C`, for a regression problem, :math:`\tau` can be set as :math:`0.5`.
+    :return: A scale value, representing the UR loss.
+
+
+.. py:class:: Wrapper(model, optimizer, criterion, batch_size=512, epochs=1, callbacks=None, label_type="c", device="cpu", reset_param=True, ur=0, ur_tau=0.5, **kwargs)
+
+    .. py:method:: train_on_batch(self, input, target)
+
+    .. py:method:: fit(X, y)
+
+    .. py:method:: fit_loader(self, train_loader)
+
+    .. py:method:: predict(self, X, y=None)
+
+    .. py:method:: predict_proba(self, X, y=None)
+
+    .. py:method:: save(self, path)
+
+    .. py:method:: load(self, path)
+
+
+
+[3] `Cui Y, Wu D, Huang J. Optimize tsk fuzzy systems for classification problems: Minibatch gradient descent with uniform regularization and batch normalization[J]. IEEE Transactions on Fuzzy Systems, 2020, 28(12): 3065-3075. <https://ieeexplore.ieee.org/abstract/document/8962207/>`_
+
+pytsk.gradient_descent.callbacks
+####################################
+
+
+.. py:class:: Callback()
+
+    .. py:method:: on_batch_begin(self, wrapper)
+
+    .. py:method:: on_batch_end(self, wrapper)
+
+    .. py:method:: on_epoch_begin(self, wrapper)
+
+    .. py:method:: on_epoch_end(self, wrapper)
+
+
+.. py:class:: EvaluateAcc()
+
+    .. py:method:: on_epoch_end(self, wrapper)
+
+
+.. py:class:: EarlyStoppingACC()
+
+    .. py:method:: on_epoch_end(self, wrapper)
+
 pytsk.gradient_descent.utils
 ####################################
+
+.. py:function:: check_tensor(tensor, dtype)
+
+
+.. py:function:: reset_params(model)
+
+
+.. py:class:: NumpyDataLoader()
+
+
 
