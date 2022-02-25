@@ -175,7 +175,10 @@
 <dt id="AntecedentGMF">
 <em class="property">class </em><code class="sig-name descname">AntecedentGMF</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_dim</span></em>, <em class="sig-param"><span class="n">n_rule</span></em>, <em class="sig-param"><span class="n">high_dim</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">init_center</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_sigma</span><span class="o">=</span><span class="default_value">1.</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">1e-8</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AntecedentGMF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parent: <code class="code docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></p>
-<p>The antecedent part with Gaussian membership function. Input: data, output the corresponding firing levels of each rule.</p>
+<p>The antecedent part with Gaussian membership function. Input: data, output the corresponding firing levels of each rule. The firing level <span class="math notranslate nohighlight">\(f_r(\mathbf{x})\)</span> of the <span class="math notranslate nohighlight">\(r\)</span>-th rule are computed by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;\mu_{r,d}(x_d) = \exp(-\frac{(x_d - m_{r,d})^2}{2\sigma_{r,d}^2}),\\
+&amp;f_{r}(\mathbf{x})=\prod_{d=1}^{D}\mu_{r,d}(x_d).\end{split}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -281,6 +284,10 @@
 <dt id="antecedent_init_center">
 <code class="sig-name descname">antecedent_init_center</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_rule</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'kmean'</span></em>, <em class="sig-param"><span class="n">engine</span><span class="o">=</span><span class="default_value">'sklearn'</span></em>, <em class="sig-param"><span class="n">n_init</span><span class="o">=</span><span class="default_value">20</span></em><span class="sig-paren">)</span><a class="headerlink" href="#antecedent_init_center" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function run KMeans clustering to obtain the <code class="code docutils literal notranslate"><span class="pre">init_center</span></code> for <a class="reference internal" href="#AntecedentGMF" title="AntecedentGMF"><code class="xref py py-func docutils literal notranslate"><span class="pre">AntecedentGMF()</span></code></a>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">init_center</span> <span class="o">=</span> <span class="n">antecedent_init_center</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_rule</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;kmean&quot;</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">antecedent</span> <span class="o">=</span> <span class="n">AntecedentGMF</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_rule</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">init_center</span><span class="o">=</span><span class="n">init_center</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -302,7 +309,7 @@
 <h2>pytsk.gradient_descent.tsk<a class="headerlink" href="#pytsk-gradient-descent-tsk" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="TSK">
-<em class="property">class </em><code class="sig-name descname">TSK</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_dim</span></em>, <em class="sig-param"><span class="n">out_dim</span></em>, <em class="sig-param"><span class="n">n_rule</span></em>, <em class="sig-param"><span class="n">antecedent</span></em>, <em class="sig-param"><span class="n">order</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">1e-8</span></em>, <em class="sig-param"><span class="n">consbn</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TSK" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">TSK</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_dim</span></em>, <em class="sig-param"><span class="n">out_dim</span></em>, <em class="sig-param"><span class="n">n_rule</span></em>, <em class="sig-param"><span class="n">antecedent</span></em>, <em class="sig-param"><span class="n">order</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">1e-8</span></em>, <em class="sig-param"><span class="n">precons</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TSK" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parent: <code class="code docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></p>
 <p>This module define the consequent part of the TSK model and combines it with a pre-defined antecedent module. The input of this module is the raw feature matrix, and output the final prediction of a TSK model.</p>
 <dl class="field-list simple">
@@ -310,11 +317,11 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>in_dim</strong> (<em>int</em>) – Number of features <span class="math notranslate nohighlight">\(D\)</span>.</p></li>
 <li><p><strong>out_dim</strong> (<em>int</em>) – Number of output dimension <span class="math notranslate nohighlight">\(C\)</span>.</p></li>
-<li><p><strong>n_rule</strong> (<em>int</em>) – Number of rules <span class="math notranslate nohighlight">\(R\)</span>, must equal to the <code class="code docutils literal notranslate"><span class="pre">n_rule</span></code> of the <code class="code docutils literal notranslate"><span class="pre">antecedent</span></code>.</p></li>
+<li><p><strong>n_rule</strong> (<em>int</em>) – Number of rules <span class="math notranslate nohighlight">\(R\)</span>, must equal to the <code class="code docutils literal notranslate"><span class="pre">n_rule</span></code> of the <code class="code docutils literal notranslate"><span class="pre">Antecedent()</span></code>.</p></li>
 <li><p><strong>antecedent</strong> (<em>torch.Module</em>) – An antecedent module, whose output dimension should be equal to the number of rules <span class="math notranslate nohighlight">\(R\)</span>.</p></li>
 <li><p><strong>order</strong> (<em>int</em>) – 0 or 1. The order of TSK. If 0, zero-oder TSK, else, first-order TSK.</p></li>
 <li><p><strong>eps</strong> (<em>float</em>) – A constant to avoid the division zero error.</p></li>
-<li><p><strong>consbn</strong> (<em>bool</em>) – If true, a BN layer is added to normalize the consequent input, see <a class="reference external" href="../models.html#batch-normalization">Models &amp; Technique</a> for details.</p></li>
+<li><p><strong>consbn</strong> (<em>torch.nn.Module</em>) – If none, the raw feature will be used as the consequent input; If a pytorch module, then the consequent input will be the output of the given module. If you wish to use the BN technique we mentioned in <a class="reference external" href="../models.html#batch-normalization">Models &amp; Technique</a>, you can set <code class="code docutils literal notranslate"><span class="pre">precons=nn.BatchNorm1d(in_dim)</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -366,40 +373,163 @@ where <span class="math notranslate nohighlight">\(f_{n,r}\)</span> represents t
 <dl class="py class">
 <dt id="Wrapper">
 <em class="property">class </em><code class="sig-name descname">Wrapper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">criterion</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">512</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">callbacks</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">label_type</span><span class="o">=</span><span class="default_value">'c'</span></em>, <em class="sig-param"><span class="n">device</span><span class="o">=</span><span class="default_value">'cpu'</span></em>, <em class="sig-param"><span class="n">reset_param</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">ur</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">ur_tau</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<dd><p>This class provide a training framework for beginners to train their fuzzy neural networks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – The pre-defined TSK model.</p></li>
+<li><p><strong>optimizer</strong> (<em>torch.Optimizer</em>) – Pytorch optimizer.</p></li>
+<li><p><strong>torch.nn._Loss</strong> – Pytorch loss. For example, <code class="code docutils literal notranslate"><span class="pre">torch.nn.CrossEntropyLoss()</span></code> for classification tasks, and <code class="code docutils literal notranslate"><span class="pre">torch.nn.MSELoss()</span></code> for regression tasks.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – Batch size during training &amp; prediction.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em>) – Training epochs.</p></li>
+<li><p><strong>callbacks</strong> (<em>[</em><a class="reference internal" href="#Callback" title="Callback"><em>Callback</em></a><em>]</em>) – List of callbacks.</p></li>
+<li><p><strong>label_type</strong> (<em>str</em>) – Label type, “c” or “r”, when <code class="code docutils literal notranslate"><span class="pre">label_type=&quot;c&quot;</span></code>, label’s dtype will be changed to “int64”, when <code class="code docutils literal notranslate"><span class="pre">label_type=&quot;r&quot;</span></code>, label’s dtype will be changed to “float32”.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pytsk.gradient_descent</span> <span class="kn">import</span> <span class="n">antecedent_init_center</span><span class="p">,</span> <span class="n">AntecedentGMF</span><span class="p">,</span> <span class="n">TSK</span><span class="p">,</span> <span class="n">EarlyStoppingACC</span><span class="p">,</span> <span class="n">EvaluateAcc</span><span class="p">,</span> <span class="n">Wrapper</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">AdamW</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># ----------------- define data -----------------</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ss</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x_train</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x_test</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># ----------------- define TSK model -----------------</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n_rule</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># define number of rules</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n_class</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># define output dimension</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># first-order TSK is used</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">consbn</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># consbn tech is used</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weight_decay</span> <span class="o">=</span> <span class="mf">1e-8</span>  <span class="c1"># weight decay for pytorch optimizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lr</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># learning rate for pytorch optimizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">init_center</span> <span class="o">=</span> <span class="n">antecedent_init_center</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">n_rule</span><span class="o">=</span><span class="n">n_rule</span><span class="p">)</span>  <span class="c1"># obtain the initial antecedent center</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gmf</span> <span class="o">=</span> <span class="n">AntecedentGMF</span><span class="p">(</span><span class="n">in_dim</span><span class="o">=</span><span class="n">x_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_rule</span><span class="o">=</span><span class="n">n_rule</span><span class="p">,</span> <span class="n">high_dim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init_center</span><span class="o">=</span><span class="n">init_center</span><span class="p">)</span>  <span class="c1"># define antecedent</span>
+<span class="gp">&gt;&gt;&gt; </span> <span class="n">model</span> <span class="o">=</span> <span class="n">TSK</span><span class="p">(</span><span class="n">in_dim</span><span class="o">=</span><span class="n">x_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">out_dim</span><span class="o">=</span><span class="n">n_class</span><span class="p">,</span> <span class="n">n_rule</span><span class="o">=</span><span class="n">n_rule</span><span class="p">,</span> <span class="n">antecedent</span><span class="o">=</span><span class="n">gmf</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">consbn</span><span class="o">=</span><span class="n">consbn</span><span class="p">)</span>  <span class="c1"># define TSK</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># ----------------- define optimizers -----------------</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ante_param</span><span class="p">,</span> <span class="n">other_param</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">if</span> <span class="s2">&quot;center&quot;</span> <span class="ow">in</span> <span class="n">n</span> <span class="ow">or</span> <span class="s2">&quot;sigma&quot;</span> <span class="ow">in</span> <span class="n">n</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">ante_param</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">else</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">other_param</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamW</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">[{</span><span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">ante_param</span><span class="p">,</span> <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>  <span class="c1"># antecedent parameters usually don&#39;t need weight_decay</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span><span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">other_param</span><span class="p">,</span> <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="n">weight_decay</span><span class="p">},],</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">lr</span><span class="o">=</span><span class="n">lr</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># ----------------- split 20% data for earlystopping -----------------</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x_train</span><span class="p">,</span> <span class="n">x_val</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># ----------------- define the earlystopping callback -----------------</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EACC</span> <span class="o">=</span> <span class="n">EarlyStoppingACC</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;tmp.pkl&quot;</span><span class="p">)</span>  <span class="c1"># Earlystopping</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TACC</span> <span class="o">=</span> <span class="n">EvaluateAcc</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Check test acc during training</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># ----------------- train model -----------------</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wrapper</span> <span class="o">=</span> <span class="n">Wrapper</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(),</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="n">epochs</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">EACC</span><span class="p">,</span> <span class="n">TACC</span><span class="p">],</span> <span class="n">ur</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ur_tau</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">n_class</span><span class="p">)</span>  <span class="c1"># define training wrapper, ur weight is set to 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wrapper</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>  <span class="c1"># fit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wrapper</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;tmp.pkl&quot;</span><span class="p">)</span>  <span class="c1"># load best model saved by EarlyStoppingACC callback</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># predict, argmax for extracting classfication label</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[TSK] ACC: </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)))</span>  <span class="c1"># print ACC</span>
+</pre></div>
+</div>
+<dl class="py method">
 <dt id="Wrapper.train_on_batch">
 <code class="sig-name descname">train_on_batch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">input</span></em>, <em class="sig-param"><span class="n">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.train_on_batch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Define how to update a model with one batch of data. This method can be overwrite for custom training strategy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input</strong> (<em>torch.tensor</em>) – Feature matrix with the size of <span class="math notranslate nohighlight">\([N,D]\)</span>, <span class="math notranslate nohighlight">\(N\)</span> is the number of samples, <span class="math notranslate nohighlight">\(D\)</span> is the input dimension.</p></li>
+<li><p><strong>target</strong> (<em>torch.tensor</em>) – Target matrix with the size of <span class="math notranslate nohighlight">\([N,C]\)</span>, <span class="math notranslate nohighlight">\(C\)</span> is the output dimension.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Wrapper.fit">
 <code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.fit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Train the <code class="code docutils literal notranslate"><span class="pre">model</span></code> with numpy array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.array</em>) – Feature matrix <span class="math notranslate nohighlight">\(X\)</span> with the size of <span class="math notranslate nohighlight">\([N, D]\)</span>.</p></li>
+<li><p><strong>y</strong> (<em>numpy.array</em>) – Label matrix <span class="math notranslate nohighlight">\(Y\)</span> with the size of <span class="math notranslate nohighlight">\([N, C]\)</span>, for classification task, <span class="math notranslate nohighlight">\(C=1\)</span>, for regression task, <span class="math notranslate nohighlight">\(C\)</span> is the number of the output dimension of <code class="code docutils literal notranslate"><span class="pre">model</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Wrapper.fit_loader">
 <code class="sig-name descname">fit_loader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">train_loader</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.fit_loader" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Train the <code class="code docutils literal notranslate"><span class="pre">model</span></code> with user-defined pytorch dataloader.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>train_loader</strong> (<em>torch.utils.data.DataLoader</em>) – Data loader, the output of the loader should be corresponding to the inputs of <a class="reference internal" href="#Wrapper.train_on_batch" title="Wrapper.train_on_batch"><code class="xref py py-func docutils literal notranslate"><span class="pre">train_on_batch</span></code></a>. For example, if dataloader has two output, then <a class="reference internal" href="#Wrapper.train_on_batch" title="Wrapper.train_on_batch"><code class="xref py py-func docutils literal notranslate"><span class="pre">train_on_batch</span></code></a> should also have two inputs.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Wrapper.predict">
 <code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.predict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get the prediction of the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.array</em>) – Feature matrix <span class="math notranslate nohighlight">\(X\)</span> with the size of <span class="math notranslate nohighlight">\([N, D]\)</span>.</p></li>
+<li><p><strong>y</strong> – Not used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Prediction matrix <span class="math notranslate nohighlight">\(\hat{Y}\)</span> with the size of <span class="math notranslate nohighlight">\([N, C]\)</span>, <span class="math notranslate nohighlight">\(C\)</span> is the output dimension of the <code class="code docutils literal notranslate"><span class="pre">model</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Wrapper.predict_proba">
 <code class="sig-name descname">predict_proba</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.predict_proba" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>For classification problem only, need <code class="code docutils literal notranslate"><span class="pre">label_type=&quot;c&quot;</span></code>, return the prediction after softmax.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.array</em>) – Feature matrix <span class="math notranslate nohighlight">\(X\)</span> with the size of <span class="math notranslate nohighlight">\([N, D]\)</span>.</p></li>
+<li><p><strong>y</strong> – Not used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Prediction matrix <span class="math notranslate nohighlight">\(\hat{Y}\)</span> with the size of <span class="math notranslate nohighlight">\([N, C]\)</span>, <span class="math notranslate nohighlight">\(C\)</span> is the output dimension of the <code class="code docutils literal notranslate"><span class="pre">model</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Wrapper.save">
 <code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.save" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Save model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Model save path.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Wrapper.load">
 <code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wrapper.load" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Load model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Model save path.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -410,45 +540,114 @@ where <span class="math notranslate nohighlight">\(f_{n,r}\)</span> represents t
 <dl class="py class">
 <dt id="Callback">
 <em class="property">class </em><code class="sig-name descname">Callback</code><a class="headerlink" href="#Callback" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<dd><p>Similar as the callback class in Keras, our package provides a simplified version of callback, which allow users to monitor metrics during the training. We strongly recommend uses to custom their callbacks, here we provide two examples, <a class="reference internal" href="#EvaluateAcc" title="EvaluateAcc"><code class="xref py py-func docutils literal notranslate"><span class="pre">EvaluateAcc</span></code></a> and <a class="reference internal" href="#EarlyStoppingACC" title="EarlyStoppingACC"><code class="xref py py-func docutils literal notranslate"><span class="pre">EarlyStoppingACC</span></code></a>.</p>
+<dl class="py method">
 <dt id="Callback.on_batch_begin">
 <code class="sig-name descname">on_batch_begin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">wrapper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Callback.on_batch_begin" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Will be called before each batch.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Callback.on_batch_end">
 <code class="sig-name descname">on_batch_end</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">wrapper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Callback.on_batch_end" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Will be called after each batch.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Callback.on_epoch_begin">
 <code class="sig-name descname">on_epoch_begin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">wrapper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Callback.on_epoch_begin" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Will be called before each epoch.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Callback.on_epoch_end">
 <code class="sig-name descname">on_epoch_end</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">wrapper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Callback.on_epoch_end" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Will be called after each epoch.</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt id="EvaluateAcc">
-<em class="property">class </em><code class="sig-name descname">EvaluateAcc</code><a class="headerlink" href="#EvaluateAcc" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<em class="property">class </em><code class="sig-name descname">EvaluateAcc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#EvaluateAcc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the accuracy during training.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.array</em>) – Feature matrix with the size of <span class="math notranslate nohighlight">\([N, D]\)</span>.</p></li>
+<li><p><strong>y</strong> (<em>numpy.array</em>) – Label matrix with the size of <span class="math notranslate nohighlight">\([N, 1]\)</span>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
 <dt id="EvaluateAcc.on_epoch_end">
 <code class="sig-name descname">on_epoch_end</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">wrapper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#EvaluateAcc.on_epoch_end" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">on_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wrapper</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cur_log</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cur_log</span><span class="p">[</span><span class="s2">&quot;epoch&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">cur_epoch</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cur_log</span><span class="p">[</span><span class="s2">&quot;acc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">acc</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_log</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Epoch </span><span class="si">{:5d}</span><span class="s2">] Test ACC: </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cur_log</span><span class="p">[</span><span class="s2">&quot;epoch&quot;</span><span class="p">],</span> <span class="n">cur_log</span><span class="p">[</span><span class="s2">&quot;acc&quot;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>wrapper</strong> (<a class="reference internal" href="#Wrapper" title="Wrapper"><em>Wrapper</em></a>) – The training <a class="reference internal" href="#Wrapper" title="Wrapper"><code class="xref py py-func docutils literal notranslate"><span class="pre">Wrapper</span></code></a>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">
 <dt id="EarlyStoppingACC">
-<em class="property">class </em><code class="sig-name descname">EarlyStoppingACC</code><a class="headerlink" href="#EarlyStoppingACC" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<em class="property">class </em><code class="sig-name descname">EarlyStoppingACC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">patience</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">save_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#EarlyStoppingACC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Early-stopping by classification accuracy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.array</em>) – Feature matrix with the size of <span class="math notranslate nohighlight">\([N, D]\)</span>.</p></li>
+<li><p><strong>y</strong> (<em>numpy.array</em>) – Label matrix with the size of <span class="math notranslate nohighlight">\([N, 1]\)</span>.</p></li>
+<li><p><strong>patience</strong> (<em>int</em>) – Number of epochs with no improvement after which training will be stopped.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – verbosity mode.</p></li>
+<li><p><strong>save_path</strong> (<em>str</em>) – If <code class="code docutils literal notranslate"><span class="pre">save_path=None</span></code>, do not save models, else save the model with the best accuracy to the given path.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
 <dt id="EarlyStoppingACC.on_epoch_end">
 <code class="sig-name descname">on_epoch_end</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">wrapper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#EarlyStoppingACC.on_epoch_end" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate the validation accuracy and determine whether to stop training.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">on_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wrapper</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cur_log</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">if</span> <span class="n">acc</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_acc</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="bp">self</span><span class="o">.</span><span class="n">best_acc</span> <span class="o">=</span> <span class="n">acc</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>            <span class="n">wrapper</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">else</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">patience</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>             <span class="n">wrapper</span><span class="o">.</span><span class="n">stop_training</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cur_log</span><span class="p">[</span><span class="s2">&quot;epoch&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">cur_epoch</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cur_log</span><span class="p">[</span><span class="s2">&quot;acc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">acc</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cur_log</span><span class="p">[</span><span class="s2">&quot;best_acc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_acc</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_log</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Epoch </span><span class="si">{:5d}</span><span class="s2">] EarlyStopping Callback ACC: </span><span class="si">{:.4f}</span><span class="s2">, Best ACC: </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cur_log</span><span class="p">[</span><span class="s2">&quot;epoch&quot;</span><span class="p">],</span> <span class="n">cur_log</span><span class="p">[</span><span class="s2">&quot;acc&quot;</span><span class="p">],</span> <span class="n">cur_log</span><span class="p">[</span><span class="s2">&quot;best_acc&quot;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>wrapper</strong> (<a class="reference internal" href="#Wrapper" title="Wrapper"><em>Wrapper</em></a>) – The training <a class="reference internal" href="#Wrapper" title="Wrapper"><code class="xref py py-func docutils literal notranslate"><span class="pre">Wrapper</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -458,17 +657,37 @@ where <span class="math notranslate nohighlight">\(f_{n,r}\)</span> represents t
 <dl class="py function">
 <dt id="check_tensor">
 <code class="sig-name descname">check_tensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tensor</span></em>, <em class="sig-param"><span class="n">dtype</span></em><span class="sig-paren">)</span><a class="headerlink" href="#check_tensor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Convert <code class="code docutils literal notranslate"><span class="pre">tensor</span></code> into a <code class="code docutils literal notranslate"><span class="pre">dtype</span></code> torch.Tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tensor</strong> (<em>numpy.array/torch.tensor</em>) – Input data.</p></li>
+<li><p><strong>dtype</strong> (<em>str</em>) – PyTorch dtype string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="code docutils literal notranslate"><span class="pre">dtype</span></code> torch.Tensor.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="reset_params">
 <code class="sig-name descname">reset_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#reset_params" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Reset all parameters in <code class="code docutils literal notranslate"><span class="pre">model</span></code>.
+:param torch.nn.Module model: Pytorch model.</p>
+</dd></dl>
 
 <dl class="py class">
 <dt id="NumpyDataLoader">
-<em class="property">class </em><code class="sig-name descname">NumpyDataLoader</code><a class="headerlink" href="#NumpyDataLoader" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property">class </em><code class="sig-name descname">NumpyDataLoader</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">inputs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NumpyDataLoader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert numpy arrays into a dataloader.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>numpy.array</em>) – Numpy arrays.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </div>

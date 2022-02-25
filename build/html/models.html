@@ -95,9 +95,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#htsk">HTSK</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#droprule">DropRule</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#batch-normalization">Batch Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#uniform-regularization">Uniform Regularization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#layer-normalization">Layer Normalization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#deep-learning">Deep learning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#uniform-regularization">Uniform Regularization</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="apis/cluster.html">API: pytsk.cluster</a></li>
@@ -229,15 +229,30 @@
 <div class="section" id="batch-normalization">
 <h2>Batch Normalization<a class="headerlink" href="#batch-normalization" title="Permalink to this headline">¶</a></h2>
 <p>Batch normalization (BN) can be used to normalize the input of consequent parameters, and the experiments in [5] have shown that BN can speed up the convergence and improve the performance of a TSK model.</p>
-<p>To add the BN layer, we need to set <code class="code docutils literal notranslate"><span class="pre">consbn=True</span></code> when defining the TSK model:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">TSK</span><span class="p">(</span><span class="n">in_dim</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">out_dim</span><span class="o">=</span><span class="n">n_class</span><span class="p">,</span> <span class="n">n_rule</span><span class="o">=</span><span class="n">n_rule</span><span class="p">,</span> <span class="n">antecedent</span><span class="o">=</span><span class="n">gmf</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">consbn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<p>To add the BN layer, we need to set <code class="code docutils literal notranslate"><span class="pre">precons=nn.BatchNorm1d(in_dim)</span></code> when defining the TSK model:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">TSK</span><span class="p">(</span><span class="n">in_dim</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">out_dim</span><span class="o">=</span><span class="n">n_class</span><span class="p">,</span> <span class="n">n_rule</span><span class="o">=</span><span class="n">n_rule</span><span class="p">,</span> <span class="n">antecedent</span><span class="o">=</span><span class="n">gmf</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">precons</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">in_dim</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>[5] <a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/8962207/">Cui Y, Wu D, Huang J. Optimize tsk fuzzy systems for classification problems: Minibatch gradient descent with uniform regularization and batch normalization[J]. IEEE Transactions on Fuzzy Systems, 2020, 28(12): 3065-3075.</a></p>
+</div>
+<div class="section" id="uniform-regularization">
+<h2>Uniform Regularization<a class="headerlink" href="#uniform-regularization" title="Permalink to this headline">¶</a></h2>
+<p>[5] also proposed a uniform regularization, which can mitigate the “winner gets all” problem when training TSK with mini-batch gradient descent algorithms. The “winner gets all” problem will cause only a small number of rules dominant the prediction, other rules will have nearly zero contribution to the prediction. The uniform regularization loss is:</p>
+<div class="math notranslate nohighlight">
+\[\ell_{UR} = \sum_{r=1}^R (\frac{1}{N}\sum_{n=1}^N f_{n,r} - \tau)^2,\]</div>
+<p>where <span class="math notranslate nohighlight">\(f_{n,r}\)</span> represents the firing level of the <span class="math notranslate nohighlight">\(n\)</span>-th sample on the <span class="math notranslate nohighlight">\(r\)</span>-th rule, <span class="math notranslate nohighlight">\(N\)</span> is the batch size. Experiments in [5] has proved that UR can significantly improve the performance of TSK fuzzy system. The UR loss is defined at <a class="reference internal" href="apis/gradient_descent.html#ur_loss" title="ur_loss"><code class="xref py py-func docutils literal notranslate"><span class="pre">ur_loss</span></code></a>. If you want to use the UR during training, you can simply set a positive UR weight when initialize <a class="reference internal" href="apis/gradient_descent.html#Wrapper" title="Wrapper"><code class="xref py py-func docutils literal notranslate"><span class="pre">Wrapper</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ur</span> <span class="o">=</span> <span class="mf">1.</span>  <span class="c1"># must &gt; 0</span>
+<span class="n">ur_tau</span>  <span class="c1"># a float number between 0 and 1</span>
+<span class="n">wrapper</span> <span class="o">=</span> <span class="n">Wrapper</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="n">criterion</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span> <span class="n">ur</span><span class="o">=</span><span class="n">ur</span><span class="p">,</span> <span class="n">ur_tau</span><span class="o">=</span><span class="n">ur_tau</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>[5] <a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/8962207/">Cui Y, Wu D, Huang J. Optimize tsk fuzzy systems for classification problems: Minibatch gradient descent with uniform regularization and batch normalization[J]. IEEE Transactions on Fuzzy Systems, 2020, 28(12): 3065-3075.</a></p>
 </div>
 <div class="section" id="layer-normalization">
 <h2>Layer Normalization<a class="headerlink" href="#layer-normalization" title="Permalink to this headline">¶</a></h2>
-<p>Layer normalization (LN) can be used to normalize the firing levels of the antecedent part [6]. It can be easily proved that scale of firing levels will decrease when more rules are used. Since the gradient of the parameters in TSK are all relevant with the firing level, it will cause a gradient vanishing problem, making TSKs perform bad, especially when using SGD/SGDM as optimizer. LN normalizes the firing level, similar as the LN layer in Transformer, can solve the gradient vanishing problems and improve the performance. Adding a ReLU acitivation can further filter the negative firing levels generated by LN, improving the interpretability and robustness to outliers.</p>
+<p>Layer normalization (LN) can be used to normalize the firing levels of the antecedent part [6]. It can be easily proved that the scale of firing levels will decrease when more rules are used. Since the gradient of the parameters in TSK are all relevant with the firing level, it will cause a gradient vanishing problem, making TSKs perform bad, especially when using SGD/SGDM as optimizer. LN normalizes the firing level, similar as the LN layer in Transformer, can solve the gradient vanishing problems and improve the performance. Adding a ReLU acitivation can further filter the negative firing levels generated by LN, improving the interpretability and robustness to outliers.</p>
 <p>To add LN &amp; ReLU, we can do:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># --------- Define antecedent ------------</span>
 <span class="n">init_center</span> <span class="o">=</span> <span class="n">antecedent_init_center</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n_rule</span><span class="o">=</span><span class="n">n_rule</span><span class="p">)</span>
@@ -257,20 +272,17 @@
 <h2>Deep learning<a class="headerlink" href="#deep-learning" title="Permalink to this headline">¶</a></h2>
 <p>TSK models can also be used as a classifier/regressor in a deep neural network, which may improving the performance of neural networks. To do that, we first need to get the middle output of neural networks for antecedent initialization, and then define the deep fuzzy systems as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># --------- Define antecedent ------------</span>
-<span class="c1"># X is the output of NeuralNetworks, y is still the corresponding label</span>
+<span class="c1"># Note that X should be the output of NeuralNetworks, y is still the corresponding label</span>
 <span class="n">init_center</span> <span class="o">=</span> <span class="n">antecedent_init_center</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n_rule</span><span class="o">=</span><span class="n">n_rule</span><span class="p">)</span>
-<span class="n">gmf</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
-    <span class="n">NeuralNetworks</span><span class="p">(),</span>
-    <span class="n">AntecedentGMF</span><span class="p">(</span><span class="n">in_dim</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_rule</span><span class="o">=</span><span class="n">n_rule</span><span class="p">,</span> <span class="n">high_dim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init_center</span><span class="o">=</span><span class="n">init_center</span><span class="p">),</span>
-<span class="p">)</span>
+<span class="n">gmf</span> <span class="o">=</span> <span class="n">AntecedentGMF</span><span class="p">(</span><span class="n">in_dim</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_rule</span><span class="o">=</span><span class="n">n_rule</span><span class="p">,</span> <span class="n">high_dim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init_center</span><span class="o">=</span><span class="n">init_center</span><span class="p">)</span>
 
-<span class="c1"># --------- Define full TSK model ------------</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">TSK</span><span class="p">(</span><span class="n">in_dim</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">out_dim</span><span class="o">=</span><span class="n">n_class</span><span class="p">,</span> <span class="n">n_rule</span><span class="o">=</span><span class="n">n_rule</span><span class="p">,</span> <span class="n">antecedent</span><span class="o">=</span><span class="n">gmf</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+<span class="c1"># ---------- Define deep learning + TSK -------------</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+    <span class="n">NeuralNetworks</span><span class="p">(),</span>
+    <span class="n">TSK</span><span class="p">(</span><span class="n">in_dim</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">out_dim</span><span class="o">=</span><span class="n">n_class</span><span class="p">,</span> <span class="n">n_rule</span><span class="o">=</span><span class="n">n_rule</span><span class="p">,</span> <span class="n">antecedent</span><span class="o">=</span><span class="n">gmf</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">),</span>
+<span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="uniform-regularization">
-<h2>Uniform Regularization<a class="headerlink" href="#uniform-regularization" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 

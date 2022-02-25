@@ -162,7 +162,7 @@
             
   <div class="section" id="api-pytsk-cluster">
 <h1>API: pytsk.cluster<a class="headerlink" href="#api-pytsk-cluster" title="Permalink to this headline">¶</a></h1>
-<p>This package contains all the APIs you need to build and train a fuzzy system by fuzzy clustering algorithms.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">pytsk.cluster</span></code> mainly provide fuzzy clustering algorithms. Each algorithm will implemente a <code class="code docutils literal notranslate"><span class="pre">transform</span></code> method, which convert the input of raw feature <span class="math notranslate nohighlight">\(X \in \mathbb{R}^{N,D}\)</span> into the consequent input matrix <span class="math notranslate nohighlight">\(P \in \mathbb{R}^{N,T}\)</span> of TSK fuzzy systems, where <span class="math notranslate nohighlight">\(D\)</span> is the input dimension, <span class="math notranslate nohighlight">\(N\)</span> is the number of samples, for a zero order TSK fuzzy system, <span class="math notranslate nohighlight">\(T=R\)</span>, where <span class="math notranslate nohighlight">\(R\)</span> is the number of rules (equal to the number of clusters of the fuzzy clustering algorithm), for a first-order TSK fuzzy system, <span class="math notranslate nohighlight">\(T = (D+1)\times R\)</span>.</p>
 <dl class="py class">
 <dt id="pytsk.cluster.BaseFuzzyClustering">
 <em class="property">class </em><code class="sig-prename descclassname">pytsk.cluster.</code><code class="sig-name descname">BaseFuzzyClustering</code><a class="headerlink" href="#pytsk.cluster.BaseFuzzyClustering" title="Permalink to this definition">¶</a></dt>
@@ -181,6 +181,11 @@
 <em class="property">class </em><code class="sig-prename descclassname">pytsk.cluster.</code><code class="sig-name descname">FuzzyCMeans</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_cluster</span></em>, <em class="sig-param"><span class="n">fuzzy_index</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">sigma_scale</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">'random'</span></em>, <em class="sig-param"><span class="n">tol_iter</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">error</span><span class="o">=</span><span class="default_value">1e-6</span></em>, <em class="sig-param"><span class="n">dist</span><span class="o">=</span><span class="default_value">'euclidean'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">order</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytsk.cluster.FuzzyCMeans" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parent: <a class="reference internal" href="#pytsk.cluster.BaseFuzzyClustering" title="pytsk.cluster.BaseFuzzyClustering"><code class="xref py py-func docutils literal notranslate"><span class="pre">BaseFuzzyClustering</span></code></a>, <code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code>.</p>
 <p>The fuzzy c-means (FCM) clustering algorithm [1]. This implementation is adopted from the <a class="reference external" href="https://pythonhosted.org/scikit-fuzzy/overview.html">scikit-fuzzy</a> package. When constructing a TSK fuzzy system, a fuzzy clustering algorithm is usually used to compute the antecedent parameters, after that, the consequent parameters can be computed by least-squared error algorithms, such as Ridge regression [2]. How to use this class can be found at <a class="reference external" href="quick_start.html#training-with-fuzzy-clustering">Quick start</a>.</p>
+<p>The objective function of the FCM is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;J = \sum_{i=1}^{N}\sum_{j=1}^{C} U_{i,j}^m\|\mathbf{x}_i - \mathbf{v}_j\|_2^2\\
+&amp;s.t. \sum_{j=1}^{C}\mu_{i,j} = 1, i = 1,...,N,\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(N\)</span> is the number of samples, <span class="math notranslate nohighlight">\(C\)</span> is the number of clusters (which also corresponding to the number of rules of TSK fuzzy systems), <span class="math notranslate nohighlight">\(m\)</span> is the fuzzy index, <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>-th input vector, <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th cluster center vector, <span class="math notranslate nohighlight">\(U_{i,j}\)</span> is the membership degree of the <span class="math notranslate nohighlight">\(i\)</span>-th input vector on the <span class="math notranslate nohighlight">\(j\)</span>-th cluster center vector. The FCM algorithm will obtain the centers  <span class="math notranslate nohighlight">\(\mathbf{v}_j, j=1,...,C\)</span> and the membership degrees <span class="math notranslate nohighlight">\(U_{i,j}\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -230,7 +235,7 @@
 <dl class="py method">
 <dt id="pytsk.cluster.FuzzyCMeans.transform">
 <code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytsk.cluster.FuzzyCMeans.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transform <code class="code docutils literal notranslate"><span class="pre">X</span></code> into the consequent input matrix <span class="math notranslate nohighlight">\(X_p\)</span></p>
+<dd><p>Compute the membership degree matrix <span class="math notranslate nohighlight">\(U\)</span>, and use <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(U\)</span> to get the consequent input matrix <span class="math notranslate nohighlight">\(P\)</span> using function <a class="reference internal" href="#x2xp" title="x2xp"><code class="xref py py-func docutils literal notranslate"><span class="pre">x2xp(x,</span> <span class="pre">u,</span> <span class="pre">order)</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -247,9 +252,15 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="x2xp__">
-<span id="__x2xp__"></span><code class="sig-name descname">__x2xp__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">u</span></em>, <em class="sig-param"><span class="n">order</span></em><span class="sig-paren">)</span><a class="headerlink" href="#x2xp__" title="Permalink to this definition">¶</a></dt>
+<dt id="x2xp">
+<code class="sig-name descname">x2xp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">U</span></em>, <em class="sig-param"><span class="n">order</span></em><span class="sig-paren">)</span><a class="headerlink" href="#x2xp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the feature matrix <span class="math notranslate nohighlight">\(X\)</span> and the membership degree matrix <span class="math notranslate nohighlight">\(U\)</span> into the consequent input matrix <span class="math notranslate nohighlight">\(X_p\)</span></p>
+<p>Each row in <span class="math notranslate nohighlight">\(X\in \mathbb{R}^{N,D}\)</span> represents a <span class="math notranslate nohighlight">\(D\)</span>-dimension input vector. Suppose vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is one row, and then the consequent input matrix <span class="math notranslate nohighlight">\(P\)</span> is computed as [5] for a first-order TSK:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;\mathbf{x}_e = (1, \mathbf{x}),\\
+&amp;\tilde{\mathbf{x}}_r = u_r \mathbf{x}_e,\\
+&amp;\mathbf{p} = (\tilde{\mathbf{x}}_1, \tilde{\mathbf{x}}_2, ...,\tilde{\mathbf{x}}_R),\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> is the corresponding row in <span class="math notranslate nohighlight">\(P\)</span>, which is a <span class="math notranslate nohighlight">\((D+1)\times R\)</span>-dimension vector. Then the consequent parameters of TSK can be optimized by any linear regression algorithms.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -262,10 +273,34 @@
 <dd class="field-even"><p>If <code class="code docutils literal notranslate"><span class="pre">order=0</span></code>, return <span class="math notranslate nohighlight">\(U\)</span> directly, else if <code class="code docutils literal notranslate"><span class="pre">order=1</span></code>, return the matrix <span class="math notranslate nohighlight">\(X_p\)</span> with the size of <span class="math notranslate nohighlight">\([N, (D+1)\times R]\)</span>. Details can be found at [2].</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="compute_variance">
+<code class="sig-name descname">compute_variance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">U</span></em>, <em class="sig-param"><span class="n">V</span></em><span class="sig-paren">)</span><a class="headerlink" href="#compute_variance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the variance of the Gaussian membership function in TSK fuzzy systems. After performing the FCM, one can use <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> and <span class="math notranslate nohighlight">\(U_{i,j}\)</span> to construct the Gaussian membership function based antecedent of a TSK fuzzy system. The center of the Gaussian membership function can be directly set as center <cite>mathbf{v}_j</cite>, the standard deviation of the Gaussian membership function can be computed as follows:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[\sigma_{r,d}=\left[\sum_{i=1}^N U_{i,r}(x_{i,d}-v_{r,d})^2 / \sum_{i=1}^N U_{i,r} \right]^{1/2},\]</div>
+<p>where <span class="math notranslate nohighlight">\(v_{r,d}\)</span> represents the cluster center of the <span class="math notranslate nohighlight">\(d\)</span>-th dimension in the <span class="math notranslate nohighlight">\(r\)</span>-th rule.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>numpy.array</em>) – Input matrix <span class="math notranslate nohighlight">\(X\)</span> with the size of <span class="math notranslate nohighlight">\([N, D]\)</span>.</p></li>
+<li><p><strong>u</strong> (<em>numpy.array</em>) – Membership degree matrix <span class="math notranslate nohighlight">\(U\)</span> with the size of <span class="math notranslate nohighlight">\([R, N]\)</span>.</p></li>
+<li><p><strong>v</strong> (<em>numpy.array</em>) – Cluster center matrix <span class="math notranslate nohighlight">\(V\)</span> with the size of <span class="math notranslate nohighlight">\([R, D]\)</span>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The standard variation matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> with the size of <span class="math notranslate nohighlight">\([R, D]\)</span>.</p>
+</dd>
+</dl>
 <p>[1] <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/0098300484900207">Bezdek J C, Ehrlich R, Full W. FCM: The fuzzy c-means clustering algorithm[J]. Computers &amp; geosciences, 1984, 10(2-3): 191-203.</a></p>
 <p>[2] <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1568494606000469">Wang S, Chung K F L, Zhaohong D, et al. Robust fuzzy clustering neural network based on ɛ-insensitive loss function[J]. Applied Soft Computing, 2007, 7(2): 577-584.</a></p>
 <p>[3] <a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/1262532/">Yu J, Cheng Q, Huang H. Analysis of the weighting exponent in the FCM[J]. IEEE Transactions on Systems, Man, and Cybernetics, Part B (Cybernetics), 2004, 34(1): 634-639.</a></p>
 <p>[4] <a class="reference external" href="https://arxiv.org/pdf/2102.04271.pdf">Cui Y, Wu D, Xu Y. Curse of dimensionality for tsk fuzzy neural networks: Explanation and solutions[C]//2021 International Joint Conference on Neural Networks (IJCNN). IEEE, 2021: 1-8.</a></p>
+<p>[5] <a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/5629439/">Deng Z, Choi K S, Chung F L, et al. Scalable TSK fuzzy modeling for very large datasets using minimal-enclosing-ball approximation[J]. IEEE Transactions on Fuzzy Systems, 2010, 19(2): 210-226.</a></p>
 </dd></dl>
 
 </div>

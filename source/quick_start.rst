@@ -50,7 +50,7 @@ Define TSK parameters::
 Construct TSK model, for example, HTSK model with LN-ReLU::
 
    # --------- Define antecedent ------------
-    init_center = antecedent_init_center(X, y, n_rule=n_rule)
+    init_center = antecedent_init_center(x_train, y_train, n_rule=n_rule)
     gmf = nn.Sequential(
         AntecedentGMF(in_dim=X.shape[1], n_rule=n_rule, high_dim=True, init_center=init_center),
         nn.LayerNorm(n_rule),
@@ -61,7 +61,7 @@ Construct TSK model, for example, HTSK model with LN-ReLU::
     )
 
     # --------- Define full TSK model ------------
-    model = TSK(in_dim=X.shape[1], out_dim=n_class, n_rule=n_rule, antecedent=gmf, order=order, consbn=consbn)
+    model = TSK(in_dim=X.shape[1], out_dim=n_class, n_rule=n_rule, antecedent=gmf, order=order, precons=None)
 
 Define optimizer, split train-val, define earlystopping callback::
 
