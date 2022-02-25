@@ -20,7 +20,7 @@ Pip install
 ############
 Install by pip::
 
-    pip install pytsk
+    pip install scikit-pytsk
 
 
 Source code can be found in Github: https://github.com/YuqiCui/PyTSK
