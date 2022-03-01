@@ -15,7 +15,8 @@ pytsk.gradient_descent.antecedent
 
     .. math::
         &\mu_{r,d}(x_d) = \exp(-\frac{(x_d - m_{r,d})^2}{2\sigma_{r,d}^2}),\\
-        &f_{r}(\mathbf{x})=\prod_{d=1}^{D}\mu_{r,d}(x_d).
+        &f_{r}(\mathbf{x})=\prod_{d=1}^{D}\mu_{r,d}(x_d),\\
+        &\overline{f}_r(\mathbf{x}) = \frac{f_{r}(\mathbf{x})}{\sum_{i=1}^R f_{i}(\mathbf{x})}.
 
 
     :param int in_dim: Number of features :math:`D` of the input.
@@ -353,6 +354,7 @@ pytsk.gradient_descent.utils
 .. py:function:: reset_params(model)
 
     Reset all parameters in :code:`model`.
+
     :param torch.nn.Module model: Pytorch model.
 
 
