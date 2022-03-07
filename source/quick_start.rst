@@ -11,20 +11,21 @@ Import everything you need::
     import numpy as np
     import torch
     import torch.nn as nn
-    from pytsk.gradient_descent.antecedent import AntecedentGMF, AntecedentShareGMF, antecedent_init_center
-    from pytsk.gradient_descent.callbacks import EarlyStoppingACC
-    from pytsk.gradient_descent.training import Wrapper
-    from pytsk.gradient_descent.tsk import TSK
-    from pmlb import fetch_data
+    from sklearn.datasets import make_classification
     from sklearn.metrics import accuracy_score
     from sklearn.model_selection import train_test_split
     from sklearn.preprocessing import StandardScaler
     from torch.optim import AdamW
 
+    from pytsk.gradient_descent.antecedent import AntecedentGMF, antecedent_init_center
+    from pytsk.gradient_descent.callbacks import EarlyStoppingACC
+    from pytsk.gradient_descent.training import Wrapper
+    from pytsk.gradient_descent.tsk import TSK
+
 Prepare dataset::
 
-    # Prepare dataset by the PMLB package
-    X, y = fetch_data('segmentation', return_X_y=True, local_cache_dir='./data/')
+    # Prepare dataset
+    X, y = make_classification(n_samples=1000, n_features=20, n_classes=2)  # X: [n_samples, n_features], y: [n_samples, 1]
     n_class = len(np.unique(y))  # Num. of class
 
     # split train-test
@@ -103,18 +104,19 @@ Complete code can be found at: https://github.com/YuqiCui/PyTSK/quickstart_fuzzy
 Import everything you need::
 
     import numpy as np
-    from pmlb import fetch_data
+    from sklearn.datasets import make_classification
     from sklearn.linear_model import RidgeClassifier
     from sklearn.metrics import accuracy_score
     from sklearn.model_selection import train_test_split, GridSearchCV
-    from sklearn.preprocessing import StandardScaler
-    from pytsk.cluster.cluster import FuzzyCMeans
     from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import StandardScaler
+
+    from pytsk.cluster import FuzzyCMeans
 
 Prepare dataset::
 
-    # Prepare dataset by the PMLB package
-    X, y = fetch_data('segmentation', return_X_y=True, local_cache_dir='./data/')
+    # Prepare dataset
+    X, y = make_classification(n_samples=1000, n_features=20, n_classes=2)  # X: [n_samples, n_features], y: [n_samples, 1]
     n_class = len(np.unique(y))  # Num. of class
 
     # split train-test
@@ -151,7 +153,7 @@ If you need analysis the input of consequent part::
 
 If you need grid search all important parameters::
 
-        param_grid = {
+    param_grid = {
         "Consequent__alpha": [0.01, 0.1, 1, 10, 100],
         "GaussianAntecedent__n_rule": [10, 20, 30, 40],
         "GaussianAntecedent__sigma_scale": [0.01, 0.1, 1, 10, 100],
