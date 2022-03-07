@@ -9,7 +9,6 @@ Complete code can be found at: https://github.com/YuqiCui/PyTSK/quickstart_gradi
 Import everything you need::
 
     import numpy as np
-    import torch
     import torch.nn as nn
     from sklearn.datasets import make_classification
     from sklearn.metrics import accuracy_score
@@ -50,7 +49,7 @@ Define TSK parameters::
 
 Construct TSK model, for example, HTSK model with LN-ReLU::
 
-   # --------- Define antecedent ------------
+    # --------- Define antecedent ------------
     init_center = antecedent_init_center(x_train, y_train, n_rule=n_rule)
     gmf = nn.Sequential(
         AntecedentGMF(in_dim=X.shape[1], n_rule=n_rule, high_dim=True, init_center=init_center),
