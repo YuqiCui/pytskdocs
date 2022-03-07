@@ -58,8 +58,6 @@ Construct TSK model, for example, HTSK model with LN-ReLU::
         nn.ReLU()
     )
     # set high_dim=True is highly recommended.
-        nn.Dropout(p=0.25)
-    )
 
     # --------- Define full TSK model ------------
     model = TSK(in_dim=X.shape[1], out_dim=n_class, n_rule=n_rule, antecedent=gmf, order=order, precons=None)
