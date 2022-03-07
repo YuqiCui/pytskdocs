@@ -4,7 +4,7 @@ Quick Start
 Training with gradient descent
 ##############################
 
-Complete code can be found at: https://github.com/YuqiCui/PyTSK/quickstart_gradient_descent.py
+Complete code can be found at: https://github.com/YuqiCui/PyTSK/blob/master/quickstart_gradient_descent.py
 
 Import everything you need::
 
@@ -96,7 +96,7 @@ Evaluate model's performance::
 Training with fuzzy clustering
 ###############################
 
-Complete code can be found at: https://github.com/YuqiCui/PyTSK/quickstart_fuzzy_clustering.py
+Complete code can be found at: https://github.com/YuqiCui/PyTSK/blob/master/quickstart_fuzzy_clustering.py
 
 Import everything you need::
 
