@@ -133,7 +133,7 @@ Define & train the TSK model::
     n_rule = 20
     model = Pipeline(
         steps=[
-            ("Antecedent", FuzzyCMeans(n_rule, sigma_scale="auto", fuzzy_index="auto")),
+            ("GaussianAntecedent", FuzzyCMeans(n_rule, sigma_scale="auto", fuzzy_index="auto")),
             ("Consequent", RidgeClassifier())
         ]
     )
@@ -146,7 +146,7 @@ If you need analysis the input of consequent part::
 
     # ---------------- get the input of consequent part for further analysis-----------------
     antecedent = model.named_steps['GaussianAntecedent']
-    consequent_input = model.transform(x_test)
+    consequent_input = antecedent.transform(x_test)
 
 If you need grid search all important parameters::
 
