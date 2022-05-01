@@ -14,6 +14,12 @@ It's dependencies are as follows:
 * `PyTorch <https://pytorch.org>`_ [Necessary] for constructing and training fuzzy neural networks.
 * `Faiss <https://github.com/facebookresearch/faiss>`_ [Optional] a faster version for k-means clustering.
 
+To run the code in `quick start <quick_start.html>`_, you also need to install the following packages:
+
+* `PMLB <https://epistasislab.github.io/pmlb/>`_ for downloading datasets.
+
+
+
 .. toctree::
    :caption: Table of Contents
    :glob:

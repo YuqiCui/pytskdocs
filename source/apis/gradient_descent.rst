@@ -76,6 +76,82 @@ pytsk.gradient_descent.antecedent
         :param torch.tensor X: Pytorch tensor with the size of :math:`[N, D]`, where :math:`N` is the number of samples, :math:`D` is the input dimension.
         :return: Firing level matrix :math:`U` with the size of :math:`[N, R], R=M^D`:.
 
+.. py:class:: AntecedentTriMF(in_dim, n_rule, init_center=None, init_left_dist=3., init_right_dist=3., eps=1e-8)
+
+    Parent: :code:`torch.nn.Module`
+
+    The antecedent part with triangle membership function. Input: data, output the corresponding firing levels of each rule. The firing level :math:`f_r(\mathbf{x})` of the :math:`r`-th rule are computed by:
+
+    .. math::
+        &\mu_{r,d}(x_d) = \max(0, \min(\frac{1}{d^{(l)}_{r,d}}x + 1 - \frac{m_{r,d}}{d^{(l)}_{r,d}}, -\frac{1}{d^{(r)}_{r,d}}x + 1 + \frac{m_{r,d}}{d^{(r)}_{r,d}})),\\
+        &f_{r}(\mathbf{x})=\prod_{d=1}^{D}\mu_{r,d}(x_d),\\
+        &\overline{f}_r(\mathbf{x}) = \frac{f_{r}(\mathbf{x})}{\sum_{i=1}^R f_{i}(\mathbf{x})},
+
+    where :math:`d^{(l)}_{r,d}`/:math:`d^{(r)}_{r,d}` is the distance between the center and the left/right vertex of the triangle membership function, respectively. A simple schematic is shown below:
+
+    .. image:: /images/tria_mf.png
+        :height: 300px
+        :align: center
+
+    :param int in_dim: Number of features :math:`D` of the input.
+    :param int n_rule: Number of rules :math:`R` of the TSK model.
+    :param numpy.array init_center: Initial center of the triangle membership function with the size of :math:`[D,M]`.
+    :param float init_left_dist: Initial :math:`d^{(l)}` of the triangle membership function.
+    :param float init_right_dist: Initial :math:`d^{(r)}` of the triangle membership function.
+    :param float eps: A constant to avoid the division zero error.
+
+    .. py:method:: init(self, center, left_dist, right_dist)
+
+        Change the value of :code:`init_center`, :code:`init_left_dist` and :code:`init_right_dist`.
+
+    :param numpy.array init_center: Initial center of the triangle membership function with the size of :math:`[D,R]`.
+    :param float left_dist: Initial :math:`d^{(l)}` of the triangle membership function.
+    :param float right_dist: Initial :math:`d^{(r)}` of the triangle membership function.
+
+    .. py:method:: reset_parameters(self)
+
+        Re-initialize all parameters.
+
+    .. py:method:: forward(self, X)
+
+        Forward method of Pytorch Module.
+
+        :param torch.tensor X: Pytorch tensor with the size of :math:`[N, D]`, where :math:`N` is the number of samples, :math:`D` is the input dimension.
+        :return: Firing level matrix :math:`U` with the size of :math:`[N, R]`:.
+
+
+.. py:class:: AntecedentShareTriMF(in_dim, n_mf=2, init_center=None, init_left_dist=3., init_right_dist=3., eps=1e-8)
+
+    Parent: :code:`torch.nn.Module`
+
+    The antecedent part with triangle membership function, rules will share the membership functions on each feature [2]. The number of rules will be :math:`M^D`, where :math:`M` is :code:`n_mf`, :math:`D` is the number of features (:code:`in_dim`).
+
+    :param int in_dim: Number of features :math:`D` of the input.
+    :param int n_mf: Number of membership functions :math:`M` of each feature.
+    :param numpy.array init_center: Initial center of the triangle membership function with the size of :math:`[D,M]`.
+    :param float init_left_dist: Initial :math:`d^{(l)}` of the triangle membership function.
+    :param float init_right_dist: Initial :math:`d^{(r)}` of the triangle membership function.
+    :param float eps: A constant to avoid the division zero error.
+
+    .. py:method:: init(self, center, sigma)
+
+        Change the value of :code:`init_center`, :code:`init_left_dist` and :code:`init_right_dist`.
+
+    :param numpy.array init_center: Initial center of the triangle membership function with the size of :math:`[D,M]`.
+    :param float left_dist: Initial :math:`d^{(l)}` of the triangle membership function.
+    :param float right_dist: Initial :math:`d^{(r)}` of the triangle membership function.
+
+    .. py:method:: reset_parameters(self)
+
+        Re-initialize all parameters.
+
+    .. py:method:: forward(self, X)
+
+        Forward method of Pytorch Module.
+
+        :param torch.tensor X: Pytorch tensor with the size of :math:`[N, D]`, where :math:`N` is the number of samples, :math:`D` is the input dimension.
+        :return: Firing level matrix :math:`U` with the size of :math:`[N, R], R=M^D`:.
+
 .. py:function:: antecedent_init_center(X, y=None, n_rule=2, method="kmean", engine="sklearn", n_init=20)
 
     This function run KMeans clustering to obtain the :code:`init_center` for :func:`AntecedentGMF() <AntecedentGMF>`.
